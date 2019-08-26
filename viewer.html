@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Viewer Source Code</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Viewer Source Code</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Viewer Source Code</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">file: viewer.h</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#pragma</span> <span class="keyword">once</span><br/>
+<br/>
+<span class="in1"></span><span class="type">struct</span> <span class="type">ViewerMsg</span> {<br/>
+<span class="in1"></span>};<br/>
+<br/>
+<span class="in1"></span><span class="type">struct</span> <span class="type">Viewer</span> {<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">x</span>, <span class="var">y</span>, <span class="var">w</span>, <span class="var">h</span>;<br/>
+<span class="in2"></span><span class="type">void</span> (*<span class="var">handler</span>)(<span class="type">Viewer</span> &amp;, <span class="type">ViewerMsg</span> &amp;);<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">state</span>;<br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@End(<span class="name">file: viewer.h</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>
