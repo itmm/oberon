@@ -12,5 +12,17 @@
 		void (*handler)(Viewer &, ViewerMsg &);
 		int state;
 	};
+
+	struct InputMsg: public ViewerMsg {
+		int id;
+		int x, y;
+		int keys;
+		char ch;
+	};
+
+	struct ControlMsg: public ViewerMsg {
+		int id;
+		int x, y;
+	};
 @End(file: viewer.h)
 ```
