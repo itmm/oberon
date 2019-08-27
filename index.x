@@ -1,12 +1,12 @@
 # Reimplementation of the Oberon System
 
 ```
-@inc(viewer.x)
+@inc(viewers.x)
 ```
 
 ```
 @Def(file: oberon.cpp)
-	#include "viewer.h"
+	#include "viewers.h"
 
 	int main() {
 	}

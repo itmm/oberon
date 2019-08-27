@@ -1,12 +1,26 @@
-oberon: oberon.cpp
+SRCs := $(shell hx-srcs.sh)
+FILEs := $(shell hx-files.sh $(SRCs))
+CPPs := $(filter %.cpp,$(FILEs))
+HTMLs := $(SRCs:.x=.html)
+Ds := $(CPPs:.cpp=.d)
+Os := $(CPPs:.cpp=.o)
 
-oberon.cpp: hx-run viewer.h
-	touch $@
+.PHONY: all clean
 
-viewer.h: hx-run
-	touch $@
+all: oberon $(HTMLs)
 
-hx-run: index.x viewer.x
+-include $(Ds)
+
+CXXFLAGS += -Wall -MMD -std=c++17
+
+oberon: $(Os)
+	$(CXX) $^ -o $@
+
+hx-run: $(SRCs)
 	hx
 	date > hx-run
 
+$(FILEs) $(HTMLs): hx-run
+
+clean:
+	rm -f $(FILEs) $(HTMLs) $(Ds) oberon hx-run

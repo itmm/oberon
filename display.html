@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Viewer Source Code</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Viewer Source Code</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Viewer Source Code</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">file: display.h</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#pragma</span> <span class="keyword">once</span><br/>
+<br/>
+<span class="in1"></span><span class="keyword">namespace</span> <span class="type">Display</span> {<br/>
+<span class="in2"></span><span class="type">struct</span> <span class="type">Frame_Msg</span> { };<br/>
+<br/>
+<span class="in2"></span><span class="type">struct</span> <span class="type">Frame</span> {<br/>
+<span class="in3"></span><span class="type">Frame</span> *<span class="var">next</span>, *<span class="var">descendant</span>;<br/>
+<span class="in3"></span><span class="type">int</span> <span class="var">x</span>, <span class="var">y</span>, <span class="var">width</span>, <span class="var">height</span>;<br/>
+<span class="in3"></span><span class="var">virtual</span> <span class="type">void</span> <span class="fn">handle</span>(<br/>
+<span class="in4"></span><span class="type">const</span> <span class="type">Frame_Msg</span> &amp;<br/>
+<span class="in3"></span>) { }<br/>
+<span class="in2"></span>};<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">file: display.h</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>
