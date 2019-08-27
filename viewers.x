@@ -41,110 +41,93 @@
 		void Init_Track(
 			int width, int height,
 			Viewer *filler
-		)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		);
 
 		void Open_Track(
 			int x, int width,
 			Viewer *filler
-		)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		);
 
-		void Close_Track(int x)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		void Close_Track(int x);
 
 		void Open(
 			Viewer *viewer,
 			int x, int y
-		)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		);
 
 		void Change(
 			Viewer *viewer,
 			int y
-		)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		);
 
-		void Close(Viewer *viewer)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		void Close(Viewer *viewer);
 
-		Viewer *This(int x, int y)
-		#if viewers_IMPL
-			{
-				return nullptr;
-			}
-		#else
-			;
-		#endif
+		Viewer *This(int x, int y);
 
-		Viewer *Next(Viewer *viewer)
-		#if viewers_IMPL
-			{
-				return nullptr;
-			}
-		#else
-			;
-		#endif
+		Viewer *Next(Viewer *viewer);
 
-		void Recall(Viewer **viewer)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		void Recall(Viewer **viewer);
 
 		void Locate(
 			int x, int height,
 			Viewer **fil, Viewer **bot,
 			Viewer **alt, Viewer **max
-		)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		);
 
-		void Broadcast(Viewer_Msg *msg)
-		#if viewers_IMPL
-			{
-			}
-		#else
-			;
-		#endif
+		void Broadcast(Viewer_Msg *msg);
 
 		#if viewers_IMPL
+			void Init_Track(
+				int width, int height,
+				Viewer *filler
+			) {
+			}
+
+			void Open_Track(
+				int x, int width,
+				Viewer *filler
+			) {
+			}
+
+			void Close_Track(int x) {
+			}
+
+			void Open(
+				Viewer *viewer,
+				int x, int y
+			) {
+			}
+
+			void Change(
+				Viewer *viewer,
+				int y
+			) {
+			}
+
+			void Close(Viewer *viewer) {
+			}
+
+			Viewer *This(int x, int y) {
+				return nullptr;
+			}
+
+			Viewer *Next(Viewer *viewer) {
+				return nullptr;
+			}
+
+			void Recall(Viewer **viewer) {
+			}
+
+			void Locate(
+				int x, int height,
+				Viewer **fil, Viewer **bot,
+				Viewer **alt, Viewer **max
+			) {
+			}
+
+			void Broadcast(Viewer_Msg *msg) {
+			}
+
 			struct Track: public Viewer {
 				Display::Frame *under;
 			};

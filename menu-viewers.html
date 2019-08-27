@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Viewer Source Code</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Viewer Source Code</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Viewer Source Code</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@inc(<span class="name"><a href="display.html">display.x</a></span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@inc(<span class="name"><a href="viewers.html">viewers.x</a></span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">file: menu-viewers.h</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#pragma</span> <span class="keyword">once</span><br/>
+<br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">"viewers.h"</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">"display.h"</span><br/>
+<br/>
+<span class="in1"></span><span class="keyword">namespace</span> <span class="type">Menu_Viewers</span> {<br/>
+<br/>
+<span class="in2"></span><span class="type">enum</span> {<br/>
+<span class="in3"></span><span class="var">extend</span> = <span class="num">0</span>,<br/>
+<span class="in3"></span><span class="var">reduce</span> = <span class="num">1</span>,<br/>
+<span class="in3"></span><span class="var">move</span> = <span class="num">2</span><br/>
+<span class="in2"></span>};<br/>
+<br/>
+<span class="in2"></span><span class="type">struct</span> <span class="type">Viewer</span>:<br/>
+<span class="in3"></span><span class="keyword">public</span> <span class="type">Viewers</span>::<span class="type">Viewer</span><br/>
+<span class="in2"></span>{<br/>
+<span class="in3"></span><span class="type">int</span> <span class="var">menu_height</span>;<br/>
+<br/>
+<span class="in3"></span><span class="fn">Viewer</span>(<span class="type">Display</span>::<span class="type">Frame</span> *<span class="var">menu</span>, <span class="type">Display</span>::<span class="type">Frame</span> *<span class="var">main</span>, <span class="type">int</span> <span class="var">menu_height</span>, <span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span>);<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">handle</span>(<span class="type">const</span> <span class="type">Display</span>::<span class="type">Frame_Msg</span> &amp;<span class="var">msg</span>) <span class="var">override</span>;<br/>
+<span class="in2"></span>};<br/>
+<br/>
+<span class="in2"></span><span class="keyword">#if</span> <span class="var">menu_viewers_IMPL</span><br/>
+<span class="in3"></span><span class="type">Viewer</span>::<span class="fn">Viewer</span>(<span class="type">Display</span>::<span class="type">Frame</span> *<span class="var">menu</span>, <span class="type">Display</span>::<span class="type">Frame</span> *<span class="var">main</span>, <span class="type">int</span> <span class="var">menu_height</span>, <span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="type">Viewer</span>::<span class="fn">handle</span>(<span class="type">const</span> <span class="type">Display</span>::<span class="type">Frame_Msg</span> &amp;<span class="var">msg</span>) {<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span><span class="keyword">#endif</span><br/>
+<br/>
+<span class="in2"></span><span class="type">struct</span> <span class="type">Modify_Msg</span>:<br/>
+<span class="in3"></span><span class="keyword">public</span> <span class="type">Display</span>::<span class="type">Frame_Msg</span><br/>
+<span class="in2"></span>{<br/>
+<span class="in3"></span><span class="type">int</span> <span class="var">id</span>;<br/>
+<span class="in3"></span><span class="type">int</span> <span class="var">delta_y</span>, <span class="var">y</span>, <span class="var">height</span>;<br/>
+<span class="in2"></span>};<br/>
+<br/>
+<span class="in1"></span>}<br/>
+<br/>
+<span class="macro">@End(<span class="name">file: menu-viewers.h</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">file: menu-viewers.cpp</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#define</span> <span class="var">menu_viewers_IMPL</span> <span class="num">1</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">"menu-viewers.h"</span><br/>
+<span class="macro">@End(<span class="name">file: menu-viewers.cpp</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>

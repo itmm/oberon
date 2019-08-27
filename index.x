@@ -5,6 +5,10 @@
 ```
 
 ```
+@inc(menu-viewers.x)
+```
+
+```
 @Def(file: oberon.cpp)
 	#include "viewers.h"
 

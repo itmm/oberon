@@ -55,107 +55,96 @@
 <span class="in2"></span><span class="type">void</span> <span class="fn">Init_Track</span>(<br/>
 <span class="in3"></span><span class="type">int</span> <span class="var">width</span>, <span class="type">int</span> <span class="var">height</span>,<br/>
 <span class="in3"></span><span class="type">Viewer</span> *<span class="var">filler</span><br/>
-<span class="in2"></span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span>);<br/>
 <br/>
 <span class="in2"></span><span class="type">void</span> <span class="fn">Open_Track</span>(<br/>
 <span class="in3"></span><span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">width</span>,<br/>
 <span class="in3"></span><span class="type">Viewer</span> *<span class="var">filler</span><br/>
-<span class="in2"></span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span>);<br/>
 <br/>
-<span class="in2"></span><span class="type">void</span> <span class="fn">Close_Track</span>(<span class="type">int</span> <span class="var">x</span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span><span class="type">void</span> <span class="fn">Close_Track</span>(<span class="type">int</span> <span class="var">x</span>);<br/>
 <br/>
 <span class="in2"></span><span class="type">void</span> <span class="fn">Open</span>(<br/>
 <span class="in3"></span><span class="type">Viewer</span> *<span class="var">viewer</span>,<br/>
 <span class="in3"></span><span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span><br/>
-<span class="in2"></span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span>);<br/>
 <br/>
 <span class="in2"></span><span class="type">void</span> <span class="fn">Change</span>(<br/>
 <span class="in3"></span><span class="type">Viewer</span> *<span class="var">viewer</span>,<br/>
 <span class="in3"></span><span class="type">int</span> <span class="var">y</span><br/>
-<span class="in2"></span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span>);<br/>
 <br/>
-<span class="in2"></span><span class="type">void</span> <span class="fn">Close</span>(<span class="type">Viewer</span> *<span class="var">viewer</span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span><span class="type">void</span> <span class="fn">Close</span>(<span class="type">Viewer</span> *<span class="var">viewer</span>);<br/>
 <br/>
-<span class="in2"></span><span class="type">Viewer</span> *<span class="fn">This</span>(<span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in4"></span><span class="keyword">return</span> <span class="num">nullptr</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span><span class="type">Viewer</span> *<span class="fn">This</span>(<span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span>);<br/>
 <br/>
-<span class="in2"></span><span class="type">Viewer</span> *<span class="fn">Next</span>(<span class="type">Viewer</span> *<span class="var">viewer</span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in4"></span><span class="keyword">return</span> <span class="num">nullptr</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span><span class="type">Viewer</span> *<span class="fn">Next</span>(<span class="type">Viewer</span> *<span class="var">viewer</span>);<br/>
 <br/>
-<span class="in2"></span><span class="type">void</span> <span class="fn">Recall</span>(<span class="type">Viewer</span> **<span class="var">viewer</span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span><span class="type">void</span> <span class="fn">Recall</span>(<span class="type">Viewer</span> **<span class="var">viewer</span>);<br/>
 <br/>
 <span class="in2"></span><span class="type">void</span> <span class="fn">Locate</span>(<br/>
 <span class="in3"></span><span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">height</span>,<br/>
 <span class="in3"></span><span class="type">Viewer</span> **<span class="var">fil</span>, <span class="type">Viewer</span> **<span class="var">bot</span>,<br/>
 <span class="in3"></span><span class="type">Viewer</span> **<span class="var">alt</span>, <span class="type">Viewer</span> **<span class="var">max</span><br/>
-<span class="in2"></span>)<br/>
-<span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
-<span class="in2"></span><span class="keyword">#endif</span><br/>
+<span class="in2"></span>);<br/>
 <br/>
-<span class="in2"></span><span class="type">void</span> <span class="fn">Broadcast</span>(<span class="type">Viewer_Msg</span> *<span class="var">msg</span>)<br/>
+<span class="in2"></span><span class="type">void</span> <span class="fn">Broadcast</span>(<span class="type">Viewer_Msg</span> *<span class="var">msg</span>);<br/>
+<br/>
 <span class="in2"></span><span class="keyword">#if</span> <span class="var">viewers_IMPL</span><br/>
-<span class="in3"></span>{<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Init_Track</span>(<br/>
+<span class="in4"></span><span class="type">int</span> <span class="var">width</span>, <span class="type">int</span> <span class="var">height</span>,<br/>
+<span class="in4"></span><span class="type">Viewer</span> *<span class="var">filler</span><br/>
+<span class="in3"></span>) {<br/>
 <span class="in3"></span>}<br/>
-<span class="in2"></span><span class="keyword">#else</span><br/>
-<span class="in3"></span>;<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Open_Track</span>(<br/>
+<span class="in4"></span><span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">width</span>,<br/>
+<span class="in4"></span><span class="type">Viewer</span> *<span class="var">filler</span><br/>
+<span class="in3"></span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Close_Track</span>(<span class="type">int</span> <span class="var">x</span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Open</span>(<br/>
+<span class="in4"></span><span class="type">Viewer</span> *<span class="var">viewer</span>,<br/>
+<span class="in4"></span><span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span><br/>
+<span class="in3"></span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Change</span>(<br/>
+<span class="in4"></span><span class="type">Viewer</span> *<span class="var">viewer</span>,<br/>
+<span class="in4"></span><span class="type">int</span> <span class="var">y</span><br/>
+<span class="in3"></span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Close</span>(<span class="type">Viewer</span> *<span class="var">viewer</span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">Viewer</span> *<span class="fn">This</span>(<span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span>) {<br/>
+<span class="in4"></span><span class="keyword">return</span> <span class="num">nullptr</span>;<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">Viewer</span> *<span class="fn">Next</span>(<span class="type">Viewer</span> *<span class="var">viewer</span>) {<br/>
+<span class="in4"></span><span class="keyword">return</span> <span class="num">nullptr</span>;<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Recall</span>(<span class="type">Viewer</span> **<span class="var">viewer</span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Locate</span>(<br/>
+<span class="in4"></span><span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">height</span>,<br/>
+<span class="in4"></span><span class="type">Viewer</span> **<span class="var">fil</span>, <span class="type">Viewer</span> **<span class="var">bot</span>,<br/>
+<span class="in4"></span><span class="type">Viewer</span> **<span class="var">alt</span>, <span class="type">Viewer</span> **<span class="var">max</span><br/>
+<span class="in3"></span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">void</span> <span class="fn">Broadcast</span>(<span class="type">Viewer_Msg</span> *<span class="var">msg</span>) {<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span><span class="type">struct</span> <span class="type">Track</span>: <span class="keyword">public</span> <span class="type">Viewer</span> {<br/>
+<span class="in4"></span><span class="type">Display</span>::<span class="type">Frame</span> *<span class="var">under</span>;<br/>
+<span class="in3"></span>};<br/>
 <span class="in2"></span><span class="keyword">#endif</span><br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">file: viewers.h</span>)</span><br/>
