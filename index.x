@@ -1,12 +1,16 @@
 # Oberon-Compiler in C++
 
 ```
-@inc(scanner.x)
+@inc(parser.x)
 ```
 
 ```
 @Def(file: poc.cpp)
-	#include "scanner.h"
-	int main() {}
+	#include "parser.h"
+	int main() {
+		Scanner sc { std::cin };
+		Parser prs { sc };
+		prs.module();
+	}
 @End(file: poc.cpp)
 ```

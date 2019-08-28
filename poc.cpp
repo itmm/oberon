@@ -1,5 +1,9 @@
 
 #line 8 "index.x"
 
-	#include "scanner.h"
-	int main() {}
+	#include "parser.h"
+	int main() {
+		Scanner sc { std::cin };
+		Parser prs { sc };
+		prs.module();
+	}

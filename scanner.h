@@ -12,11 +12,11 @@
 
 	#include <iostream>
 
-#line 321 "scanner.x"
+#line 319 "scanner.x"
 
 	#include <limits>
 
-#line 335 "scanner.x"
+#line 333 "scanner.x"
 
 	#include <vector>
 
@@ -26,29 +26,29 @@
 #line 28 "scanner.x"
 
 	enum class Symbol {
-		s_null,
+		s_null = 0,
 		
 #line 38 "scanner.x"
 
-	s_times, s_rdiv, s_div, s_mod, s_and,
-	s_plus, s_minus, s_or, s_eql, s_neq,
-	s_lss, s_leq, s_gtr, s_geq, s_in,
-	s_is, s_arrow, s_period, s_char,
-	s_int, s_real, s_false, s_true, s_nil,
-	s_string, s_not, s_lparen, s_lbrak,
-	s_lbrace, s_ident, s_if, s_while,
-	s_repeat, s_case, s_for, s_comma,
-	s_colon, s_becomes, s_upto, s_rparen,
-	s_rbrak, s_rbrace, s_then, s_of, s_do,
-	s_to, s_by, s_semicolon, s_end, s_bar,
-	s_else, s_elsif, s_until, s_return,
-	s_array, s_record, s_pointer, s_const,
-	s_type, s_var, s_procedure, s_begin,
-	s_import, s_module,
+	s_times = 1, s_rdiv = 2, s_div = 3, s_mod = 4, s_and = 5,
+	s_plus = 6, s_minus = 7, s_or = 8, s_eql = 9, s_neq = 10,
+	s_lss = 11, s_leq = 12, s_gtr = 13, s_geq = 14, s_in = 15,
+	s_is = 16, s_arrow = 17, s_period = 18, s_char = 20,
+	s_int = 21, s_real = 22, s_false = 23, s_true = 24, s_nil = 25,
+	s_string = 26, s_not = 27, s_lparen = 28, s_lbrak = 29,
+	s_lbrace = 30, s_ident = 31, s_if = 32, s_while = 34,
+	s_repeat = 35, s_case = 36, s_for = 37, s_comma = 40,
+	s_colon = 41, s_becomes = 42, s_upto = 43, s_rparen = 44,
+	s_rbrak = 45, s_rbrace = 46, s_then = 47, s_of = 48, s_do = 49,
+	s_to = 50, s_by = 51, s_semicolon = 52, s_end = 53, s_bar = 54,
+	s_else = 55, s_elsif = 56, s_until = 57, s_return = 58,
+	s_array = 60, s_record = 61, s_pointer = 62, s_const = 63,
+	s_type = 64, s_var = 65, s_procedure = 66, s_begin = 67,
+	s_import = 68, s_module = 69,
 
 #line 31 "scanner.x"
 
-		s_eot
+		s_eot = 70
 	};
 
 #line 65 "scanner.x"
@@ -120,23 +120,23 @@
 
 	Symbol number();
 
-#line 327 "scanner.x"
+#line 325 "scanner.x"
 
 	int _int_value;
 	double _real_value;
 	static double ten(int expo);
 
-#line 480 "scanner.x"
+#line 478 "scanner.x"
 
 	Symbol identifier();
 	std::string _id;
 
-#line 508 "scanner.x"
+#line 506 "scanner.x"
 
 	void string();
 	std::string _string;
 
-#line 532 "scanner.x"
+#line 530 "scanner.x"
 
 	void hex_string();
 
@@ -153,6 +153,12 @@
 #line 139 "scanner.x"
 
 	Symbol next();
+
+#line 568 "scanner.x"
+
+	const std::string &id() const {
+		return _id;
+	}
 
 #line 12 "scanner.x"
 ;
@@ -283,17 +289,15 @@
 					s = Symbol::s_upto;
 				}
 			}
-
-			_ch = _in.get();
 		}
 		return s;
 	}
 
-#line 289 "scanner.x"
+#line 287 "scanner.x"
 
 	void Scanner::comment() {
 		
-#line 297 "scanner.x"
+#line 295 "scanner.x"
 
 	_ch = _in.get();
 	do {
@@ -315,11 +319,11 @@
 		std::cerr << "unterminated comment\n";
 	}
 
-#line 291 "scanner.x"
+#line 289 "scanner.x"
 ;
 	}
 
-#line 341 "scanner.x"
+#line 339 "scanner.x"
 
 	double Scanner::ten(int expo) {
 		double x { 1.0 };
@@ -456,7 +460,7 @@
 		return s;
 	}
 
-#line 487 "scanner.x"
+#line 485 "scanner.x"
 
 	Symbol Scanner::identifier() {
 		Symbol s { Symbol::s_null };
@@ -475,7 +479,7 @@
 		return s;
 	}
 
-#line 515 "scanner.x"
+#line 513 "scanner.x"
 
 	void Scanner::string() {
 		std::string str;
@@ -490,7 +494,7 @@
 		_string = str;
 	}
 
-#line 538 "scanner.x"
+#line 536 "scanner.x"
 
 	void Scanner::hex_string() {
 		std::string str;
