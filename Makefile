@@ -11,7 +11,7 @@ all: poc $(HTMLs)
 
 -include $(Ds)
 
-CXXFLAGS += -Wall -MMD -std=c++17
+CXXFLAGS += -Wall -MMD -std=c++17 -g
 
 poc: $(Os)
 	$(CXX) $^ -o $@

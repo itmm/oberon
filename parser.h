@@ -30,46 +30,78 @@
 
 	int declarations();
 
-#line 141 "parser.x"
+#line 87 "parser.x"
+
+	void procedure_decl();
+
+#line 151 "parser.x"
 
 	int _level = 0;
 	bool check_export();
 
-#line 163 "parser.x"
+#line 173 "parser.x"
 
 	void expression();
 
-#line 169 "parser.x"
+#line 179 "parser.x"
 
 	void type();
 
-#line 175 "parser.x"
+#line 185 "parser.x"
 
 	void ident_list();
 
-#line 236 "parser.x"
+#line 246 "parser.x"
 
 	void simple_expression();
 
-#line 261 "parser.x"
+#line 271 "parser.x"
 
 	void term();
 
-#line 288 "parser.x"
+#line 298 "parser.x"
 
 	void factor();
 
-#line 307 "parser.x"
+#line 317 "parser.x"
 
 	void qualident();
 
-#line 376 "parser.x"
+#line 323 "parser.x"
+
+	void param_list();
+
+#line 392 "parser.x"
 
 	void array_type();
 
-#line 382 "parser.x"
+#line 398 "parser.x"
 
 	void record_type();
+
+#line 404 "parser.x"
+
+	void procedure_type();
+
+#line 525 "parser.x"
+
+	void stat_sequence();
+
+#line 573 "parser.x"
+
+	void fp_section();
+
+#line 607 "parser.x"
+
+	void formal_type();
+
+#line 644 "parser.x"
+
+	void type_case();
+
+#line 757 "parser.x"
+
+	void parameter();
 
 #line 9 "parser.x"
 ;
@@ -98,7 +130,7 @@
 		}
 	}
 
-#line 87 "parser.x"
+#line 93 "parser.x"
 
 	void Parser::module() {
 		std::cout << "  compiling ";
@@ -145,12 +177,16 @@
 				check(Symbol::s_semicolon, "no ;");
 			}
 			declarations();
+			while (_symbol == Symbol::s_procedure) {
+				procedure_decl();
+				check(Symbol::s_semicolon, "no ;");
+			}
 		} else {
 			std::cerr << "must start with MODULE\n";
 		}
 	}
 
-#line 148 "parser.x"
+#line 158 "parser.x"
 
 	bool Parser::check_export() {
 		if (_symbol == Symbol::s_times) {
@@ -163,7 +199,7 @@
 		return false;
 	}
 
-#line 181 "parser.x"
+#line 191 "parser.x"
 
 	int Parser::declarations() {
 		if (_symbol < Symbol::s_const && _symbol != Symbol::s_end && _symbol != Symbol::s_return) {
@@ -216,12 +252,12 @@
 		return 0;
 	}
 
-#line 242 "parser.x"
+#line 252 "parser.x"
 
 	void Parser::expression() {
 		simple_expression();
 		if (_symbol >= Symbol::s_eql && _symbol <= Symbol::s_geq) {
-			// Symbol rel { _symbol };
+			//Symbol rel { _symbol };
 			_symbol = _scanner.next();
 			simple_expression();
 		} else if (_symbol == Symbol::s_in) {
@@ -233,7 +269,7 @@
 		}
 	}
 
-#line 267 "parser.x"
+#line 277 "parser.x"
 
 	void Parser::simple_expression() {
 		if (_symbol == Symbol::s_minus) {
@@ -246,13 +282,13 @@
 			term();
 		}
 		while (_symbol >= Symbol::s_plus && _symbol <= Symbol::s_or) {
-			// Symbol op { _symbol };
+			//Symbol op { _symbol };
 			_symbol = _scanner.next();
 			term();
 		}
 	}
 
-#line 294 "parser.x"
+#line 304 "parser.x"
 
 	void Parser::term() {
 		factor();
@@ -263,7 +299,7 @@
 		}
 	}
 
-#line 313 "parser.x"
+#line 329 "parser.x"
 
 	void Parser::factor() {
 		if (_symbol < Symbol::s_char || _symbol > Symbol::s_ident) {
@@ -276,7 +312,7 @@
 			qualident();
 			if (_symbol == Symbol::s_lparen) {
 				_symbol = _scanner.next();
-				// param_list();
+				param_list();
 			}
 		} else if (_symbol == Symbol::s_int) {
 			_symbol = _scanner.next();
@@ -308,7 +344,7 @@
 		}
 	}
 
-#line 360 "parser.x"
+#line 376 "parser.x"
 
 	void Parser::qualident() {
 		_symbol = _scanner.next();
@@ -322,7 +358,7 @@
 		}
 	}
 
-#line 388 "parser.x"
+#line 410 "parser.x"
 
 	void Parser::type() {
 		if (_symbol != Symbol::s_ident && _symbol < Symbol::s_array) {
@@ -342,6 +378,7 @@
 			check(Symbol::s_end, "no END");
 		} else if (_symbol == Symbol::s_pointer) {
 			_symbol = _scanner.next();
+			check(Symbol::s_to, "no TO");
 			if (_symbol == Symbol::s_ident) {
 				_symbol = _scanner.next();
 			} else {
@@ -349,13 +386,13 @@
 			}
 		} else if (_symbol == Symbol::s_procedure) {
 			_symbol = _scanner.next();
-			// procedure_type();
+			procedure_type();
 		} else {
 			std::cerr << "illegal type\n";
 		}
 	}
 
-#line 423 "parser.x"
+#line 446 "parser.x"
 
 	void Parser::array_type() {
 		expression();
@@ -370,7 +407,7 @@
 		}
 	}
 
-#line 440 "parser.x"
+#line 463 "parser.x"
 
 	void Parser::ident_list() {
 		if (_symbol == Symbol::s_ident) {
@@ -393,7 +430,7 @@
 		}
 	}
 
-#line 465 "parser.x"
+#line 488 "parser.x"
 
 	void Parser::record_type() {
 		if (_symbol == Symbol::s_lparen) {
@@ -425,6 +462,237 @@
 			} else if (_symbol != Symbol::s_end) {
 				std::cerr << "; or END\n";
 			}
+		}
+	}
+
+#line 531 "parser.x"
+
+	void Parser::procedure_decl() {
+		_symbol = _scanner.next();
+		if (_symbol == Symbol::s_times) {
+			_symbol = _scanner.next();
+		}
+		if (_symbol == Symbol::s_ident) {
+			std::string proc_id { _scanner.id() };
+			_symbol = _scanner.next();
+			check_export();
+			procedure_type();
+			check(Symbol::s_semicolon, "no ;");
+			declarations();
+			if (_symbol == Symbol::s_procedure) {
+				do {
+					procedure_decl();
+					check(Symbol::s_semicolon, "no ;");
+				} while (_symbol == Symbol::s_procedure);
+			}
+			if (_symbol == Symbol::s_begin) {
+				_symbol = _scanner.next();
+				stat_sequence();
+			}
+			if (_symbol == Symbol::s_return) {
+				_symbol = _scanner.next();
+				expression();
+			}
+			check(Symbol::s_end, "no END");
+			if (_symbol == Symbol::s_ident) {
+				if (_scanner.id() != proc_id) {
+					std::cerr << "no match\n";
+				}
+				_symbol = _scanner.next();
+			} else {
+				std::cerr << "no proc id\n";
+			}
+		}
+	}
+
+#line 579 "parser.x"
+
+	void Parser::procedure_type() {
+		if (_symbol == Symbol::s_lparen) {
+			_symbol = _scanner.next();
+			if (_symbol == Symbol::s_rparen) {
+				_symbol = _scanner.next();
+			} else {
+				fp_section();
+				while (_symbol == Symbol::s_semicolon) {
+					_symbol = _scanner.next();
+					fp_section();
+				}
+				check(Symbol::s_rparen, "no )");
+			}
+			if (_symbol == Symbol::s_colon) {
+				_symbol = _scanner.next();
+				if (_symbol == Symbol::s_ident) {
+					qualident();
+				} else {
+					std::cerr << "type identifier expected\n";
+				}
+			}
+		}
+	}
+
+#line 613 "parser.x"
+
+	void Parser::fp_section() {
+		if (_symbol == Symbol::s_var) {
+			_symbol = _scanner.next();
+		}
+		ident_list();
+		formal_type();
+	}
+
+#line 625 "parser.x"
+
+	void Parser::formal_type() {
+		if (_symbol == Symbol::s_ident) {
+			qualident();
+		} else if (_symbol == Symbol::s_array) {
+			_symbol = _scanner.next();
+			check(Symbol::s_of, "OF ?");
+			formal_type();
+		} else if (_symbol == Symbol::s_procedure) {
+			_symbol = _scanner.next();
+			procedure_type();
+		} else {
+			std::cerr << "identifier expected\n";
+		}
+	}
+
+#line 650 "parser.x"
+
+	void Parser::stat_sequence() {
+		do {
+			if (!((_symbol >= Symbol::s_ident && (_symbol <= Symbol::s_for)) || (_symbol >= Symbol::s_semicolon))) {
+				std::cerr << "statement expected\n";
+				do {
+					_symbol = _scanner.next();
+				} while (!((_symbol >= Symbol::s_ident && (_symbol <= Symbol::s_for)) || (_symbol >= Symbol::s_semicolon)));
+			}
+			if (_symbol == Symbol::s_ident) {
+				qualident();
+				// selector();
+				if (_symbol == Symbol::s_becomes) {
+					_symbol = _scanner.next();
+					expression();
+				} else if (_symbol == Symbol::s_eql) {
+					std::cerr << "should be :=\n";
+					_symbol = _scanner.next();
+					expression();
+				} else if (_symbol == Symbol::s_lparen) {
+					_symbol = _scanner.next();
+					param_list();
+				}
+			} else if (_symbol == Symbol::s_if) {
+				_symbol = _scanner.next();
+				expression();
+				check(Symbol::s_then, "no THEN");
+				stat_sequence();
+				while (_symbol == Symbol::s_elsif) {
+					_symbol = _scanner.next();
+					expression();
+					check(Symbol::s_then, "no THEN");
+					stat_sequence();
+				}
+				if (_symbol == Symbol::s_else) {
+					_symbol = _scanner.next();
+					stat_sequence();
+				}
+				check(Symbol::s_end, "no END");
+			} else if (_symbol == Symbol::s_while) {
+				_symbol = _scanner.next();
+				expression();
+				check(Symbol::s_do, "no DO");
+				stat_sequence();
+				while (_symbol == Symbol::s_elsif) {
+					_symbol = _scanner.next();
+					expression();
+					check(Symbol::s_do, "no DO");
+					stat_sequence();
+				}
+				check(Symbol::s_end, "no END");
+			} else if (_symbol == Symbol::s_repeat) {
+				_symbol = _scanner.next();
+				stat_sequence();
+				if (_symbol == Symbol::s_until) {
+					_symbol = _scanner.next();
+					expression();
+				} else {
+					std::cerr << "missing UNTIL\n";
+				}
+			} else if (_symbol == Symbol::s_for) {
+				_symbol = _scanner.next();
+				if (_symbol == Symbol::s_ident) {
+					qualident();
+					if (_symbol == Symbol::s_becomes) {
+						_symbol = _scanner.next();
+						expression();
+						check(Symbol::s_to, "no TO");
+						expression();
+						if (_symbol == Symbol::s_by) {
+							_symbol = _scanner.next();
+							expression();
+						}
+						check(Symbol::s_do, "no DO");
+						stat_sequence();
+						check(Symbol::s_end, "ne END");
+					} else {
+						std::cerr << ":= expected\n";
+					}
+				} else {
+					std::cerr << "identifier expected\n";
+				}
+			} else if (_symbol == Symbol::s_case) {
+				_symbol = _scanner.next();
+				if (_symbol == Symbol::s_ident) {
+					qualident();
+					check(Symbol::s_of, "OF expected");
+					type_case();
+					while (_symbol == Symbol::s_bar) {
+						_symbol = _scanner.next();
+						type_case();
+					}
+				} else {
+					std::cerr << "ident expected\n";
+				}
+			}
+			if (_symbol == Symbol::s_semicolon) {
+				_symbol = _scanner.next();
+			} else {
+				std::cerr << "missing semicolon?\n";
+			}
+		} while (_symbol <= Symbol::s_semicolon);
+	}
+
+#line 763 "parser.x"
+
+	void Parser::param_list() {
+		if (_symbol != Symbol::s_rparen) {
+			parameter();
+			while (_symbol <= Symbol::s_comma) {
+				check(Symbol::s_comma, "comma?");
+				parameter();
+			}
+			check(Symbol::s_rparen, ") missing");
+		} else {
+			_symbol = _scanner.next();
+		}
+	}
+
+#line 780 "parser.x"
+
+	void Parser::parameter() {
+		expression();
+	}
+
+#line 788 "parser.x"
+
+	void Parser::type_case() {
+		if (_symbol == Symbol::s_ident) {
+			qualident();
+			check(Symbol::s_colon, ": expected");
+			stat_sequence();
+		} else {
+			std::cerr << "type id expected\n";
 		}
 	}
 
