@@ -1,19 +1,12 @@
-# Reimplementation of the Oberon System
+# Oberon-Compiler in C++
 
 ```
-@inc(viewers.x)
-```
-
-```
-@inc(menu-viewers.x)
+@inc(scanner.x)
 ```
 
 ```
-@Def(file: oberon.cpp)
-	#include "viewers.h"
-
-	int main() {
-	}
-@End(file: oberon.cpp)
+@Def(file: poc.cpp)
+	#include "scanner.h"
+	int main() {}
+@End(file: poc.cpp)
 ```
-

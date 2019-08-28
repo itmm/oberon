@@ -7,13 +7,13 @@ Os := $(CPPs:.cpp=.o)
 
 .PHONY: all clean
 
-all: oberon $(HTMLs)
+all: poc $(HTMLs)
 
 -include $(Ds)
 
 CXXFLAGS += -Wall -MMD -std=c++17
 
-oberon: $(Os)
+poc: $(Os)
 	$(CXX) $^ -o $@
 
 hx-run: $(SRCs)
@@ -23,4 +23,4 @@ hx-run: $(SRCs)
 $(FILEs) $(HTMLs): hx-run
 
 clean:
-	rm -f $(FILEs) $(HTMLs) $(Ds) oberon hx-run
+	rm -f $(FILEs) $(HTMLs) $(Ds) poc hx-run
