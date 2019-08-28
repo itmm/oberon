@@ -326,6 +326,12 @@
 ```
 
 ```
+@add(privates)
+	void set();
+@end(privates)
+```
+
+```
 @add(impl)
 	void Parser::factor() {
 		if (_symbol < Symbol::s_char || _symbol > Symbol::s_ident) {
@@ -336,6 +342,7 @@
 		}
 		if (_symbol == Symbol::s_ident) {
 			qualident();
+			selector();
 			if (_symbol == Symbol::s_lparen) {
 				_symbol = _scanner.next();
 				param_list();
@@ -356,7 +363,7 @@
 			check(Symbol::s_rparen, "no )");
 		} else if (_symbol == Symbol::s_lbrace) {
 			_symbol = _scanner.next();
-			// set();
+			set();
 			check(Symbol::s_rbrace, "no }");
 		} else if (_symbol == Symbol::s_not) {
 			_symbol = _scanner.next();
@@ -647,6 +654,12 @@
 ```
 
 ```
+@add(privates)
+	void selector();
+@end(privates)
+```
+
+```
 @add(impl)
 	void Parser::stat_sequence() {
 		do {
@@ -658,7 +671,7 @@
 			}
 			if (_symbol == Symbol::s_ident) {
 				qualident();
-				// selector();
+				selector();
 				if (_symbol == Symbol::s_becomes) {
 					_symbol = _scanner.next();
 					expression();
@@ -722,7 +735,7 @@
 						}
 						check(Symbol::s_do, "no DO");
 						stat_sequence();
-						check(Symbol::s_end, "ne END");
+						check(Symbol::s_end, "no END");
 					} else {
 						std::cerr << ":= expected\n";
 					}
@@ -742,11 +755,12 @@
 				} else {
 					std::cerr << "ident expected\n";
 				}
+				check(Symbol::s_end, "no END");
 			}
 			if (_symbol == Symbol::s_semicolon) {
 				_symbol = _scanner.next();
-			} else {
-				std::cerr << "missing semicolon?\n";
+			} else if (_symbol < Symbol::s_semicolon) {
+				std::cerr << "missing semicolon? " << (int) _symbol << "\n";
 			}
 		} while (_symbol <= Symbol::s_semicolon);
 	}
@@ -796,3 +810,78 @@
 		}
 	}
 @end(impl)
+```
+
+```
+@add(privates)
+	void element();
+@end(privates)
+```
+
+```
+@add(impl)
+	void Parser::set() {
+		if (_symbol >= Symbol::s_if) {
+			if (_symbol != Symbol::s_rbrace) {
+				std::cerr << "} missing\n";
+			}
+		} else {
+			element();
+			while (_symbol < Symbol::s_rparen || _symbol > Symbol::s_rbrace) {
+				if (_symbol == Symbol::s_comma) {
+					_symbol = _scanner.next();
+				} else if (_symbol != Symbol::s_rbrace) {
+					std::cerr << "missing comma\n";
+				}
+				element();
+			}
+		}
+	}
+@end(impl)
+```
+
+```
+@add(impl)
+	void Parser::element() {
+		expression();
+		if (_symbol == Symbol::s_upto) {
+			_symbol = _scanner.next();
+			expression();
+		}
+	}
+@end(impl)
+```
+
+```
+@add(impl)
+	void Parser::selector() {
+		while (_symbol == Symbol::s_lbrak || _symbol == Symbol::s_period || _symbol == Symbol::s_arrow /* || _symbol == Symbol::s_lparen */) {
+			if (_symbol == Symbol::s_lbrak) {
+				do {
+					_symbol = _scanner.next();
+					expression();
+				} while (_symbol == Symbol::s_comma);
+				check(Symbol::s_rbrak, "no ]");
+			} else if (_symbol == Symbol::s_period) {
+				_symbol = _scanner.next();
+				if (_symbol == Symbol::s_ident) {
+					_symbol = _scanner.next();
+				} else {
+					std::cerr << "ident?\n";
+				}
+			} else if (_symbol == Symbol::s_arrow) {
+				_symbol = _scanner.next();
+/*			} else if (_symbol == Symbol::s_lparen) {
+				_symbol = _scanner.next();
+				if (_symbol == Symbol::s_ident) {
+					qualident();
+				} else {
+					std::cerr << "not an identifier\n";
+				}
+				check(Symbol::s_rparen, ") missing 2");
+*/			}
+		}
+	}
+@end(impl)
+```
+
