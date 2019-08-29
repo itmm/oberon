@@ -137,11 +137,30 @@
 
 ```
 @add(privates)
+	int _line { 1 };
 	void next_ch() {
 		_ch = _in.get();
+		if (_ch == '\n') { ++_line; }
 		// std::cout << (char) _ch;
 	}
 @end(privates)
+```
+
+```
+@add(privates)
+	void err(int src, const std::string &msg) {
+		std::cerr << "\n:" << _line << " (";
+		std::cerr << src << ") ";
+		std::cerr << msg << "\n";
+	}
+	#define ERR(MSG) err(__LINE__, (MSG))
+@end(privates)
+```
+
+```
+@add(publics)
+	int line() { return _line; }
+@end(publics)
 ```
 
 ```
@@ -319,7 +338,7 @@
 	if (_ch != EOF) {
 		next_ch();
 	} else {
-		std::cerr << "unterminated comment\n";
+		ERR("unterminated comment");
 	}
 @end(comment)
 ```
@@ -376,7 +395,7 @@
 					_int_value = k;
 				} else {
 					_int_value = 0;
-					std::cerr << "illegal value\n";
+					ERR("illegal value");
 				}
 			} else if (_ch == 'R') {
 				s = Symbol::s_real;
@@ -396,11 +415,11 @@
 						if (k <= (std::numeric_limits<int>::max() - d) / 10) {
 							k = k * 10 + d;
 						} else {
-							std::cerr << "too large\n";
+							ERR("too large");
 							break;
 						}
 					} else {
-						std::cerr << "bad integer\n";
+						ERR("bad integer");
 						break;
 					}
 				}
@@ -439,7 +458,7 @@
 						}
 
 					} else {
-						std::cerr << "digit?\n";
+						ERR("digit?");
 					}
 				}
 
@@ -454,7 +473,7 @@
 						x = x * ten(expo);
 					} else {
 						x = 0.0;
-						std::cerr << "too large\n";
+						ERR("too large");
 					}
 				}
 
@@ -468,11 +487,11 @@
 					if (k <= (std::numeric_limits<int>::max() - d) / 10) {
 						k = k * 10 + d;
 					} else {
-						std::cerr << "too large\n";
+						ERR("too large");
 						break;
 					}
 				} else {
-					std::cerr << "bad integer\n";
+					ERR("bad integer");
 					break;
 				}
 			}
@@ -557,7 +576,7 @@
 			} else if (_ch >= 'A' && _ch <= 'F') {
 				m = _ch - 'A' + 10;
 			} else {
-				std::cerr << "hexdig expected\n";
+				ERR("hexdig expected");
 			}
 			next_ch();
 			if (_ch >= '0' && _ch <= '9') {
@@ -565,7 +584,7 @@
 			} else if (_ch >= 'A' && _ch <= 'F') {
 				n = _ch - 'A' + 10;
 			} else {
-				std::cerr << "hexdig expected\n";
+				ERR("hexdig expected");
 			}
 			str += (char) (m * 16 + n);
 			next_ch();

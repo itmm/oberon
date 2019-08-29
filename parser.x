@@ -66,12 +66,24 @@
 ```
 
 ```
+@add(privates)
+	void err(int src, const std::string &msg) {
+		std::cerr << "\n:" << _scanner.line() << " (";
+		std::cerr << src << ") ";
+		std::cerr << msg << " [";
+		std::cerr << (int) _symbol << "]\n";
+	}
+	#define ERR(MSG) err(__LINE__, (MSG))
+@end(privates)
+```
+
+```
 @def(impl)
 	void Parser::check(Symbol s, const std::string &msg) {
 		if (_symbol == s) {
 			_symbol = _scanner.next();
 		} else {
-			std::cerr << msg << " " << (int) _symbol << '\n';
+			ERR(msg);
 		}
 	}
 @end(impl)
@@ -107,7 +119,7 @@
 				_symbol = _scanner.next();
 				std::cout << _module << '\n';
 			} else {
-				std::cerr << "identifier expected\n";
+				ERR("identifier expected");
 			}
 			check(Symbol::s_semicolon, "no ;");
 			if (_symbol == Symbol::s_import) {
@@ -122,7 +134,7 @@
 							imp_name_2 = _scanner.id();
 							_symbol = _scanner.next();
 						} else {
-							std::cerr << "id expected\n";
+							ERR("id expected");
 						}
 					} else {
 						imp_name_2 = imp_name;
@@ -130,7 +142,7 @@
 					if (_symbol == Symbol::s_comma) {
 						_symbol = _scanner.next();
 					} else if (_symbol == Symbol::s_ident) {
-						std::cerr << "comma missing\n";
+						ERR("comma missing");
 					}
 				}
 				check(Symbol::s_semicolon, "no ;");
@@ -147,17 +159,17 @@
 			check(Symbol::s_end, "no END");
 			if (_symbol == Symbol::s_ident) {
 				if (_scanner.id() != _module) {
-					std::cerr << "no match\n";
+					ERR("no match");
 				}
 				_symbol = _scanner.next();
 			} else {
-				std::cerr << "identifier missing\n";
+				ERR("identifier missing");
 			}
 			if (_symbol != Symbol::s_period) {
-				std::cerr << "period missing\n";
+				ERR("period missing");
 			}
 		} else {
-			std::cerr << "must start with MODULE\n";
+			ERR("must start with MODULE");
 		}
 	}
 @end(impl)
@@ -176,7 +188,7 @@
 		if (_symbol == Symbol::s_times) {
 			_symbol = _scanner.next();
 			if (_level != 0) {
-				std::cerr << "remove asterisk\n";
+				ERR("remove asterisk");
 			}
 			return true;
 		}
@@ -207,7 +219,7 @@
 @add(impl)
 	int Parser::declarations() {
 		if (_symbol < Symbol::s_const && _symbol != Symbol::s_end && _symbol != Symbol::s_return) {
-			std::cerr << "declaration?\n";
+			ERR("declaration?");
 			do {
 				_symbol = _scanner.next();
 			} while (_symbol < Symbol::s_const && _symbol != Symbol::s_end && _symbol != Symbol::s_return);
@@ -221,7 +233,7 @@
 				if (_symbol == Symbol::s_eql) {
 					_symbol = _scanner.next();
 				} else {
-					std::cerr << "= ?\n";
+					ERR("= ?");
 				}
 				expression();
 				check(Symbol::s_semicolon, "; missing");
@@ -236,7 +248,7 @@
 				if (_symbol == Symbol::s_eql) {
 					_symbol = _scanner.next();
 				} else {
-					std::cerr << "= ?\n";
+					ERR("= ?");
 				}
 				type();
 				check(Symbol::s_semicolon, "; missing");
@@ -251,7 +263,7 @@
 			}
 		}
 		if (_symbol >= Symbol::s_const && _symbol <= Symbol::s_var) {
-			std::cerr << "declaration in bad order\n";
+			ERR("declaration in bad order");
 		}
 		return 0;
 	}
@@ -351,7 +363,7 @@
 @add(impl)
 	void Parser::factor() {
 		if (_symbol < Symbol::s_char || _symbol > Symbol::s_ident) {
-			std::cerr << "expression expected\n";
+			ERR("expression expected");
 			do {
 				_symbol = _scanner.next();
 			} while (_symbol < Symbol::s_char || _symbol > Symbol::s_ident);
@@ -389,7 +401,7 @@
 		} else if (_symbol == Symbol::s_true) {
 			_symbol = _scanner.next();
 		} else {
-			std::cerr << "not a factor\n";
+			ERR("not a factor");
 		}
 	}
 @end(impl)
@@ -404,7 +416,7 @@
 			if (_symbol == Symbol::s_ident) {
 				_symbol = _scanner.next();
 			} else {
-				std::cerr << "identifier expected\n";
+				ERR("identifier expected");
 			}
 		}
 	}
@@ -433,7 +445,7 @@
 @add(impl)
 	void Parser::type() {
 		if (_symbol != Symbol::s_ident && _symbol < Symbol::s_array) {
-			std::cerr << "not a type " << (int) _symbol << "\n";
+			ERR("not a type");
 			do {
 				_symbol = _scanner.next();
 			} while (_symbol != Symbol::s_ident && _symbol < Symbol::s_array);
@@ -459,7 +471,7 @@
 			_symbol = _scanner.next();
 			procedure_type();
 		} else {
-			std::cerr << "illegal type\n";
+			ERR("illegal type");
 		}
 	}
 @end(impl)
@@ -476,7 +488,7 @@
 			_symbol = _scanner.next();
 			array_type();
 		} else {
-			std::cerr << "missing OF\n";
+			ERR("missing OF");
 		}
 	}
 @end(impl)
@@ -494,13 +506,13 @@
 					_symbol = _scanner.next();
 					check_export();
 				} else {
-					std::cerr << "ident?\n";
+					ERR("ident?");
 				}
 			}
 			if (_symbol == Symbol::s_colon) {
 				_symbol = _scanner.next();
 			} else {
-				std::cerr << ":?\n";
+				ERR(":?\n");
 			}
 		}
 	}
@@ -513,12 +525,12 @@
 		if (_symbol == Symbol::s_lparen) {
 			_symbol = _scanner.next();
 			if (_level != 0) {
-				std::cerr << "extension of local types not implemented\n";
+				ERR("extension of local types not implemented");
 			}
 			if (_symbol == Symbol::s_ident) {
 				qualident();
 			} else {
-				std::cerr << "ident expected\n";
+				ERR("ident expected");
 			}
 			check(Symbol::s_rparen, "no )");
 		}
@@ -527,7 +539,7 @@
 				_symbol = _scanner.next();
 				check_export();
 				if (_symbol != Symbol::s_comma && _symbol != Symbol::s_colon) {
-					std::cerr << "comma expected\n";
+					ERR("comma expected");
 				} else if (_symbol == Symbol::s_comma) {
 					_symbol = _scanner.next();
 				}
@@ -537,7 +549,7 @@
 			if (_symbol == Symbol::s_semicolon) {
 				_symbol = _scanner.next();
 			} else if (_symbol != Symbol::s_end) {
-				std::cerr << "; or END\n";
+				ERR("; or END");
 			}
 		}
 	}
@@ -581,11 +593,11 @@
 			check(Symbol::s_end, "no END");
 			if (_symbol == Symbol::s_ident) {
 				if (_scanner.id() != proc_id) {
-					std::cerr << "no match\n";
+					ERR("no match");
 				}
 				_symbol = _scanner.next();
 			} else {
-				std::cerr << "no proc id\n";
+				ERR("no proc id");
 			}
 		}
 	}
@@ -618,7 +630,7 @@
 				if (_symbol == Symbol::s_ident) {
 					qualident();
 				} else {
-					std::cerr << "type identifier expected\n";
+					ERR("type identifier expected");
 				}
 			}
 		}
@@ -657,7 +669,7 @@
 			_symbol = _scanner.next();
 			procedure_type();
 		} else {
-			std::cerr << "identifier expected\n";
+			ERR("identifier expected");
 		}
 	}
 @end(impl)
@@ -680,7 +692,7 @@
 	void Parser::stat_sequence() {
 		do {
 			if (!((_symbol >= Symbol::s_ident && (_symbol <= Symbol::s_for)) || (_symbol >= Symbol::s_semicolon))) {
-				std::cerr << "statement expected\n";
+				ERR("statement expected");
 				do {
 					_symbol = _scanner.next();
 				} while (!((_symbol >= Symbol::s_ident && (_symbol <= Symbol::s_for)) || (_symbol >= Symbol::s_semicolon)));
@@ -692,7 +704,7 @@
 					_symbol = _scanner.next();
 					expression();
 				} else if (_symbol == Symbol::s_eql) {
-					std::cerr << "should be :=\n";
+					ERR("should be :=");
 					_symbol = _scanner.next();
 					expression();
 				} else if (_symbol == Symbol::s_lparen) {
@@ -734,7 +746,7 @@
 					_symbol = _scanner.next();
 					expression();
 				} else {
-					std::cerr << "missing UNTIL\n";
+					ERR("missing UNTIL");
 				}
 			} else if (_symbol == Symbol::s_for) {
 				_symbol = _scanner.next();
@@ -753,10 +765,10 @@
 						stat_sequence();
 						check(Symbol::s_end, "no END");
 					} else {
-						std::cerr << ":= expected\n";
+						ERR(":= expected");
 					}
 				} else {
-					std::cerr << "identifier expected\n";
+					ERR("identifier expected");
 				}
 			} else if (_symbol == Symbol::s_case) {
 				_symbol = _scanner.next();
@@ -769,14 +781,14 @@
 						type_case();
 					}
 				} else {
-					std::cerr << "ident expected\n";
+					ERR("ident expected");
 				}
 				check(Symbol::s_end, "no END");
 			}
 			if (_symbol == Symbol::s_semicolon) {
 				_symbol = _scanner.next();
 			} else if (_symbol < Symbol::s_semicolon) {
-				std::cerr << "missing semicolon? " << (int) _symbol << "\n";
+				ERR("missing semicolon?");
 			}
 		} while (_symbol <= Symbol::s_semicolon);
 	}
@@ -822,7 +834,7 @@
 			check(Symbol::s_colon, ": expected");
 			stat_sequence();
 		} else {
-			std::cerr << "type id expected\n";
+			ERR("type id expected");
 		}
 	}
 @end(impl)
@@ -839,7 +851,7 @@
 	void Parser::set() {
 		if (_symbol >= Symbol::s_if) {
 			if (_symbol != Symbol::s_rbrace) {
-				std::cerr << "} missing\n";
+				ERR("} missing");
 			}
 		} else {
 			element();
@@ -847,7 +859,7 @@
 				if (_symbol == Symbol::s_comma) {
 					_symbol = _scanner.next();
 				} else if (_symbol != Symbol::s_rbrace) {
-					std::cerr << "missing comma\n";
+					ERR("missing comma");
 				}
 				element();
 			}
@@ -883,7 +895,7 @@
 				if (_symbol == Symbol::s_ident) {
 					_symbol = _scanner.next();
 				} else {
-					std::cerr << "ident?\n";
+					ERR("ident?");
 				}
 			} else if (_symbol == Symbol::s_arrow) {
 				_symbol = _scanner.next();
@@ -892,7 +904,7 @@
 				if (_symbol == Symbol::s_ident) {
 					qualident();
 				} else {
-					std::cerr << "not an identifier\n";
+					ERR("not an identifier");
 				}
 				check(Symbol::s_rparen, ") missing 2");
 */			}

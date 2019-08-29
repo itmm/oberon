@@ -160,11 +160,32 @@
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">privates</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">_line</span> { <span class="num">1</span> };<br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">next_ch</span>() {<br/>
 <span class="in2"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'\n'</span>) { ++<span class="var">_line</span>; }<br/>
 <span class="in2"></span>// <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; (<span class="type">char</span>) <span class="var">_ch</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">privates</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">privates</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">err</span>(<span class="type">int</span> <span class="var">src</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">msg</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"\n:"</span> &lt;&lt; <span class="var">_line</span> &lt;&lt; <span class="str">" ("</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="var">src</span> &lt;&lt; <span class="str">") "</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="var">msg</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">#define</span> <span class="fn">ERR</span>(<span class="var">MSG</span>) <span class="fn">err</span>(<span class="var">__LINE__</span>, (<span class="var">MSG</span>))<br/>
+<span class="macro">@end(<span class="name">privates</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">publics</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="fn">line</span>() { <span class="keyword">return</span> <span class="var">_line</span>; }<br/>
+<span class="macro">@end(<span class="name">publics</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
@@ -348,7 +369,7 @@
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">_ch</span> != <span class="num">EOF</span>) {<br/>
 <span class="in2"></span><span class="fn">next_ch</span>();<br/>
 <span class="in1"></span>} <span class="keyword">else</span> {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"unterminated comment\n"</span>;<br/>
+<span class="in2"></span><span class="fn">ERR</span>(<span class="str">"unterminated comment"</span>);<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">comment</span>)</span><br/>
 </code></div>
@@ -409,7 +430,7 @@
 <span class="in5"></span><span class="var">_int_value</span> = <span class="var">k</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> {<br/>
 <span class="in5"></span><span class="var">_int_value</span> = <span class="num">0</span>;<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"illegal value\n"</span>;<br/>
+<span class="in5"></span><span class="fn">ERR</span>(<span class="str">"illegal value"</span>);<br/>
 <span class="in4"></span>}<br/>
 <span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'R'</span>) {<br/>
 <span class="in4"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_real</span>;<br/>
@@ -429,11 +450,11 @@
 <span class="in6"></span><span class="keyword">if</span> (<span class="var">k</span> &lt;= (<span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;::<span class="fn">max</span>() - <span class="var">d</span>) / <span class="num">10</span>) {<br/>
 <span class="in7"></span><span class="var">k</span> = <span class="var">k</span> * <span class="num">10</span> + <span class="var">d</span>;<br/>
 <span class="in6"></span>} <span class="keyword">else</span> {<br/>
-<span class="in7"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"too large\n"</span>;<br/>
+<span class="in7"></span><span class="fn">ERR</span>(<span class="str">"too large"</span>);<br/>
 <span class="in7"></span><span class="keyword">break</span>;<br/>
 <span class="in6"></span>}<br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
-<span class="in6"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"bad integer\n"</span>;<br/>
+<span class="in6"></span><span class="fn">ERR</span>(<span class="str">"bad integer"</span>);<br/>
 <span class="in6"></span><span class="keyword">break</span>;<br/>
 <span class="in5"></span>}<br/>
 <span class="in4"></span>}<br/>
@@ -472,7 +493,7 @@
 <span class="in6"></span>}<br/>
 <br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
-<span class="in6"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"digit?\n"</span>;<br/>
+<span class="in6"></span><span class="fn">ERR</span>(<span class="str">"digit?"</span>);<br/>
 <span class="in5"></span>}<br/>
 <span class="in4"></span>}<br/>
 <br/>
@@ -487,7 +508,7 @@
 <span class="in6"></span><span class="var">x</span> = <span class="var">x</span> * <span class="fn">ten</span>(<span class="var">expo</span>);<br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
 <span class="in6"></span><span class="var">x</span> = <span class="num">0</span>.<span class="num">0</span>;<br/>
-<span class="in6"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"too large\n"</span>;<br/>
+<span class="in6"></span><span class="fn">ERR</span>(<span class="str">"too large"</span>);<br/>
 <span class="in5"></span>}<br/>
 <span class="in4"></span>}<br/>
 <br/>
@@ -501,11 +522,11 @@
 <span class="in5"></span><span class="keyword">if</span> (<span class="var">k</span> &lt;= (<span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;::<span class="fn">max</span>() - <span class="var">d</span>) / <span class="num">10</span>) {<br/>
 <span class="in6"></span><span class="var">k</span> = <span class="var">k</span> * <span class="num">10</span> + <span class="var">d</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
-<span class="in6"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"too large\n"</span>;<br/>
+<span class="in6"></span><span class="fn">ERR</span>(<span class="str">"too large"</span>);<br/>
 <span class="in6"></span><span class="keyword">break</span>;<br/>
 <span class="in5"></span>}<br/>
 <span class="in4"></span>} <span class="keyword">else</span> {<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"bad integer\n"</span>;<br/>
+<span class="in5"></span><span class="fn">ERR</span>(<span class="str">"bad integer"</span>);<br/>
 <span class="in5"></span><span class="keyword">break</span>;<br/>
 <span class="in4"></span>}<br/>
 <span class="in3"></span>}<br/>
@@ -596,7 +617,7 @@
 <span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">'A'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'F'</span>) {<br/>
 <span class="in4"></span><span class="var">m</span> = <span class="var">_ch</span> - <span class="str">'A'</span> + <span class="num">10</span>;<br/>
 <span class="in3"></span>} <span class="keyword">else</span> {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"hexdig expected\n"</span>;<br/>
+<span class="in4"></span><span class="fn">ERR</span>(<span class="str">"hexdig expected"</span>);<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">'0'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) {<br/>
@@ -604,7 +625,7 @@
 <span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">'A'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'F'</span>) {<br/>
 <span class="in4"></span><span class="var">n</span> = <span class="var">_ch</span> - <span class="str">'A'</span> + <span class="num">10</span>;<br/>
 <span class="in3"></span>} <span class="keyword">else</span> {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"hexdig expected\n"</span>;<br/>
+<span class="in4"></span><span class="fn">ERR</span>(<span class="str">"hexdig expected"</span>);<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="var">str</span> += (<span class="type">char</span>) (<span class="var">m</span> * <span class="num">16</span> + <span class="var">n</span>);<br/>
 <span class="in3"></span><span class="fn">next_ch</span>();<br/>

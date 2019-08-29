@@ -12,11 +12,11 @@
 
 	#include <iostream>
 
-#line 328 "scanner.x"
+#line 347 "scanner.x"
 
 	#include <limits>
 
-#line 342 "scanner.x"
+#line 361 "scanner.x"
 
 	#include <vector>
 
@@ -114,36 +114,47 @@
 
 #line 139 "scanner.x"
 
+	int _line { 1 };
 	void next_ch() {
 		_ch = _in.get();
+		if (_ch == '\n') { ++_line; }
 		// std::cout << (char) _ch;
 	}
 
-#line 154 "scanner.x"
+#line 150 "scanner.x"
+
+	void err(int src, const std::string &msg) {
+		std::cerr << "\n:" << _line << " (";
+		std::cerr << src << ") ";
+		std::cerr << msg << "\n";
+	}
+	#define ERR(MSG) err(__LINE__, (MSG))
+
+#line 173 "scanner.x"
 
 	void comment();
 
-#line 160 "scanner.x"
+#line 179 "scanner.x"
 
 	Symbol number();
 
-#line 334 "scanner.x"
+#line 353 "scanner.x"
 
 	int _int_value;
 	double _real_value;
 	static double ten(int expo);
 
-#line 488 "scanner.x"
+#line 507 "scanner.x"
 
 	Symbol identifier();
 	std::string _id;
 
-#line 516 "scanner.x"
+#line 535 "scanner.x"
 
 	void string();
 	std::string _string;
 
-#line 540 "scanner.x"
+#line 559 "scanner.x"
 
 	void hex_string();
 
@@ -157,11 +168,15 @@
 		_in { in }, _ch{' '}
 	{ }
 
-#line 148 "scanner.x"
+#line 161 "scanner.x"
+
+	int line() { return _line; }
+
+#line 167 "scanner.x"
 
 	Symbol next();
 
-#line 578 "scanner.x"
+#line 597 "scanner.x"
 
 	const std::string &id() const {
 		return _id;
@@ -172,7 +187,7 @@
 	};
 	#if scanner_IMPL
 		
-#line 166 "scanner.x"
+#line 185 "scanner.x"
 
 	Symbol Scanner::next() {
 		Symbol s = Symbol::s_null;
@@ -300,11 +315,11 @@
 		return s;
 	}
 
-#line 296 "scanner.x"
+#line 315 "scanner.x"
 
 	void Scanner::comment() {
 		
-#line 304 "scanner.x"
+#line 323 "scanner.x"
 
 	next_ch();
 	do {
@@ -323,14 +338,14 @@
 	if (_ch != EOF) {
 		next_ch();
 	} else {
-		std::cerr << "unterminated comment\n";
+		ERR("unterminated comment");
 	}
 
-#line 298 "scanner.x"
+#line 317 "scanner.x"
 ;
 	}
 
-#line 348 "scanner.x"
+#line 367 "scanner.x"
 
 	double Scanner::ten(int expo) {
 		double x { 1.0 };
@@ -362,7 +377,7 @@
 					_int_value = k;
 				} else {
 					_int_value = 0;
-					std::cerr << "illegal value\n";
+					ERR("illegal value");
 				}
 			} else if (_ch == 'R') {
 				s = Symbol::s_real;
@@ -382,11 +397,11 @@
 						if (k <= (std::numeric_limits<int>::max() - d) / 10) {
 							k = k * 10 + d;
 						} else {
-							std::cerr << "too large\n";
+							ERR("too large");
 							break;
 						}
 					} else {
-						std::cerr << "bad integer\n";
+						ERR("bad integer");
 						break;
 					}
 				}
@@ -425,7 +440,7 @@
 						}
 
 					} else {
-						std::cerr << "digit?\n";
+						ERR("digit?");
 					}
 				}
 
@@ -440,7 +455,7 @@
 						x = x * ten(expo);
 					} else {
 						x = 0.0;
-						std::cerr << "too large\n";
+						ERR("too large");
 					}
 				}
 
@@ -454,11 +469,11 @@
 					if (k <= (std::numeric_limits<int>::max() - d) / 10) {
 						k = k * 10 + d;
 					} else {
-						std::cerr << "too large\n";
+						ERR("too large");
 						break;
 					}
 				} else {
-					std::cerr << "bad integer\n";
+					ERR("bad integer");
 					break;
 				}
 			}
@@ -468,7 +483,7 @@
 		return s;
 	}
 
-#line 495 "scanner.x"
+#line 514 "scanner.x"
 
 	Symbol Scanner::identifier() {
 		Symbol s { Symbol::s_null };
@@ -487,7 +502,7 @@
 		return s;
 	}
 
-#line 523 "scanner.x"
+#line 542 "scanner.x"
 
 	void Scanner::string() {
 		std::string str;
@@ -502,7 +517,7 @@
 		_string = str;
 	}
 
-#line 546 "scanner.x"
+#line 565 "scanner.x"
 
 	void Scanner::hex_string() {
 		std::string str;
@@ -517,7 +532,7 @@
 			} else if (_ch >= 'A' && _ch <= 'F') {
 				m = _ch - 'A' + 10;
 			} else {
-				std::cerr << "hexdig expected\n";
+				ERR("hexdig expected");
 			}
 			next_ch();
 			if (_ch >= '0' && _ch <= '9') {
@@ -525,7 +540,7 @@
 			} else if (_ch >= 'A' && _ch <= 'F') {
 				n = _ch - 'A' + 10;
 			} else {
-				std::cerr << "hexdig expected\n";
+				ERR("hexdig expected");
 			}
 			str += (char) (m * 16 + n);
 			next_ch();
