@@ -12,11 +12,11 @@
 
 	#include <iostream>
 
-#line 319 "scanner.x"
+#line 328 "scanner.x"
 
 	#include <limits>
 
-#line 333 "scanner.x"
+#line 342 "scanner.x"
 
 	#include <vector>
 
@@ -112,31 +112,38 @@
 	std::istream &_in = std::cin;
 	int _ch;
 
-#line 145 "scanner.x"
+#line 139 "scanner.x"
+
+	void next_ch() {
+		_ch = _in.get();
+		// std::cout << (char) _ch;
+	}
+
+#line 154 "scanner.x"
 
 	void comment();
 
-#line 151 "scanner.x"
+#line 160 "scanner.x"
 
 	Symbol number();
 
-#line 325 "scanner.x"
+#line 334 "scanner.x"
 
 	int _int_value;
 	double _real_value;
 	static double ten(int expo);
 
-#line 478 "scanner.x"
+#line 488 "scanner.x"
 
 	Symbol identifier();
 	std::string _id;
 
-#line 506 "scanner.x"
+#line 516 "scanner.x"
 
 	void string();
 	std::string _string;
 
-#line 530 "scanner.x"
+#line 540 "scanner.x"
 
 	void hex_string();
 
@@ -150,11 +157,11 @@
 		_in { in }, _ch{' '}
 	{ }
 
-#line 139 "scanner.x"
+#line 148 "scanner.x"
 
 	Symbol next();
 
-#line 568 "scanner.x"
+#line 578 "scanner.x"
 
 	const std::string &id() const {
 		return _id;
@@ -165,13 +172,13 @@
 	};
 	#if scanner_IMPL
 		
-#line 157 "scanner.x"
+#line 166 "scanner.x"
 
 	Symbol Scanner::next() {
 		Symbol s = Symbol::s_null;
 		while (s == Symbol::s_null) {
 			while (_ch != EOF && _ch <= ' ') {
-				_ch = _in.get();
+				next_ch();
 			}
 			if (_ch == EOF) {
 				s = Symbol::s_eot;
@@ -181,76 +188,76 @@
 						string();
 						s = Symbol::s_string;
 					} else if (_ch == '#') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_neq;
 					} else if (_ch == '$') {
 						hex_string();
 						s = Symbol::s_string;
 					} else if (_ch == '&') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_and;
 					} else if (_ch == '(') {
-						_ch = _in.get();
+						next_ch();
 						if (_ch == '*') {
 							comment();
 						} else {
 							s = Symbol::s_lparen;
 						}
 					} else if (_ch == ')') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_rparen;
 					} else if (_ch == '*') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_times;
 					} else if (_ch == '+') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_plus;
 					} else if (_ch == ',') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_comma;
 					} else if (_ch == '-') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_minus;
 					} else if (_ch == '.') {
-						_ch = _in.get();
+						next_ch();
 						if (_ch == '.') {
-							_ch = _in.get();
+							next_ch();
 							s = Symbol::s_upto;
 						} else {
 							s = Symbol::s_period;
 						}
 					} else if (_ch == '/') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_rdiv;
 					}
 				} else if (_ch < ':') {
 					s = number();
 				} else if (_ch == ':') {
-					_ch = _in.get();
+					next_ch();
 					if (_ch == '=') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_becomes;
 					} else {
 						s = Symbol::s_colon;
 					}
 				} else if (_ch == ';') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_semicolon;
 				} else if (_ch == '<') {
-					_ch = _in.get();
+					next_ch();
 					if (_ch == '=') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_leq;
 					} else {
 						s = Symbol::s_lss;
 					}
 				} else if (_ch == '=') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_eql;
 				} else if (_ch == '>') {
-					_ch = _in.get();
+					next_ch();
 					if (_ch == '=') {
-						_ch = _in.get();
+						next_ch();
 						s = Symbol::s_geq;
 					} else {
 						s = Symbol::s_gtr;
@@ -260,32 +267,32 @@
 				s = identifier();
 			} else if (_ch < 'a') {
 				if (_ch == '[') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_lbrak;
 				} else if (_ch == ']') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_rbrak;
 				} else if (_ch == '^') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_arrow;
 				}
 			} else if (_ch < '{') {
 				s = identifier();
 			} else {
 				if (_ch == '{') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_lbrace;
 				} else if (_ch == '}') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_rbrace;
 				} else if (_ch == '|') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_bar;
 				} else if (_ch == '~') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_not;
 				} else if (_ch == '\x7f') {
-					_ch = _in.get();
+					next_ch();
 					s = Symbol::s_upto;
 				}
 			}
@@ -293,37 +300,37 @@
 		return s;
 	}
 
-#line 287 "scanner.x"
+#line 296 "scanner.x"
 
 	void Scanner::comment() {
 		
-#line 295 "scanner.x"
+#line 304 "scanner.x"
 
-	_ch = _in.get();
+	next_ch();
 	do {
 		while (_ch != EOF && _ch != '*') {
 			if (_ch == '(') {
-				_ch = _in.get();
+				next_ch();
 				if (_ch == '*') {
 					comment();
 				}
 			} else {
-				_ch = _in.get();
+				next_ch();
 			}
 		}
-		while (_ch == '*') { _ch = _in.get(); }
+		while (_ch == '*') { next_ch(); }
 	} while (_ch != EOF && _ch != ')');
 	if (_ch != EOF) {
-		_ch = _in.get();
+		next_ch();
 	} else {
 		std::cerr << "unterminated comment\n";
 	}
 
-#line 289 "scanner.x"
+#line 298 "scanner.x"
 ;
 	}
 
-#line 339 "scanner.x"
+#line 348 "scanner.x"
 
 	double Scanner::ten(int expo) {
 		double x { 1.0 };
@@ -341,7 +348,7 @@
 		Symbol s { Symbol::s_null };
 		do {
 			digits.push_back(_ch - '0');
-			_ch = _in.get();
+			next_ch();
 		} while ((_ch >= '0' && _ch <= '9') || (_ch >= 'A' && _ch <= 'F'));
 		if (_ch == 'H' || _ch == 'R' || _ch == 'X') {
 			int k { 0 };
@@ -364,14 +371,15 @@
 				s = Symbol::s_int;
 				_int_value = k;
 			}
+			next_ch();
 		} else if (_ch == '.') {
-			_ch = _in.get();
+			next_ch();
 			if (_ch == '.') {
 				_ch = '\x7f';
 				int k = 0;
 				for (const auto &d : digits) {
 					if (d < 10) {
-						if (k < (std::numeric_limits<int>::max() - d) / 10) {
+						if (k <= (std::numeric_limits<int>::max() - d) / 10) {
 							k = k * 10 + d;
 						} else {
 							std::cerr << "too large\n";
@@ -393,22 +401,22 @@
 				while (_ch >= '0' && _ch <= '9') {
 					x = x * 10.0 + (_ch - '0');
 					++expo;
-					_ch = _in.get();
+					next_ch();
 				}
 				if (_ch == 'E' || _ch == 'D') {
-					_ch = _in.get();
+					next_ch();
 					bool neg_expo { false };
 					if (_ch == '-') {
-						_ch = _in.get();
+						next_ch();
 						neg_expo = true;
 					} else if (_ch == '+') {
-						_ch = _in.get();
+						next_ch();
 					}
 					if (_ch >= '0' && _ch <= '9') {
 						int scale { 0 };
 						while (_ch >= 0 && _ch <= '9') {
 							scale = scale * 10 + (_ch - '0');
-							_ch = _in.get();
+							next_ch();
 						}
 						if (neg_expo) {
 							expo -= scale;
@@ -419,31 +427,31 @@
 					} else {
 						std::cerr << "digit?\n";
 					}
-					
-					if (expo < 0) {
-						if (expo >= std::numeric_limits<double>::min_exponent10) {
-							x = x / ten(-expo);
-						} else {
-							x = 0.0;
-						}
-					} else if (expo > 0) {
-						if (expo <= std::numeric_limits<double>::max_exponent10) {
-							x = x * ten(expo);
-						} else {
-							x = 0.0;
-							std::cerr << "too large\n";
-						}
-					}
-
-					s = Symbol::s_real;
-					_real_value = x;
 				}
+
+				if (expo < 0) {
+					if (expo >= std::numeric_limits<double>::min_exponent10) {
+						x = x / ten(-expo);
+					} else {
+						x = 0.0;
+					}
+				} else if (expo > 0) {
+					if (expo <= std::numeric_limits<double>::max_exponent10) {
+						x = x * ten(expo);
+					} else {
+						x = 0.0;
+						std::cerr << "too large\n";
+					}
+				}
+
+				s = Symbol::s_real;
+				_real_value = x;
 			}
 		} else {
 			int k = 0;
 			for (const auto &d: digits) {
 				if (d < 10) {
-					if (k < (std::numeric_limits<int>::max() - d) / 10) {
+					if (k <= (std::numeric_limits<int>::max() - d) / 10) {
 						k = k * 10 + d;
 					} else {
 						std::cerr << "too large\n";
@@ -460,14 +468,14 @@
 		return s;
 	}
 
-#line 485 "scanner.x"
+#line 495 "scanner.x"
 
 	Symbol Scanner::identifier() {
 		Symbol s { Symbol::s_null };
 		std::string id;
 		do {
 			id += (char) _ch;
-			_ch = _in.get();
+			next_ch();
 		} while ((_ch >= '0' && _ch <= '9') || (_ch >= 'A' && _ch <= 'Z') || (_ch >= 'a' && _ch <= 'z'));
 		auto found = keywords.find(id);
 		if (found != keywords.end()) {
@@ -479,30 +487,30 @@
 		return s;
 	}
 
-#line 513 "scanner.x"
+#line 523 "scanner.x"
 
 	void Scanner::string() {
 		std::string str;
-		_ch = _in.get();
+		next_ch();
 		while (_ch != EOF && _ch != '"') {
 			if (_ch >= ' ') {
 				str += (char) _ch;
 			}
-			_ch = _in.get();
+			next_ch();
 		}
-		if (_ch != EOF) { _ch = _in.get(); }
+		if (_ch != EOF) { next_ch(); }
 		_string = str;
 	}
 
-#line 536 "scanner.x"
+#line 546 "scanner.x"
 
 	void Scanner::hex_string() {
 		std::string str;
-		_ch = _in.get();
+		next_ch();
 		int m, n;
 		while (_ch != EOF && _ch != '$') {
 			while (_ch != EOF && _ch <= ' ') {
-				_ch = _in.get();
+				next_ch();
 			}
 			if (_ch >= '0' && _ch <= '9') {
 				m = _ch - '0';
@@ -511,7 +519,7 @@
 			} else {
 				std::cerr << "hexdig expected\n";
 			}
-			_ch = _in.get();
+			next_ch();
 			if (_ch >= '0' && _ch <= '9') {
 				n = _ch - '0';
 			} else if (_ch >= 'A' && _ch <= 'F') {
@@ -520,7 +528,7 @@
 				std::cerr << "hexdig expected\n";
 			}
 			str += (char) (m * 16 + n);
-			_ch = _in.get();
+			next_ch();
 		}
 	}
 

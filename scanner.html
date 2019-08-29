@@ -15,7 +15,7 @@
 <div><div>
 <code>
 <span class="macro">@Def(<span class="name">file: scanner.h</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#pragma</span> <span class="var">once</span><br/>
+<span class="in1"></span><span class="keyword">#pragma</span> <span class="keyword">once</span><br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">includes</span>)</span>;<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">globals</span>)</span>;<br/>
 <span class="in1"></span><span class="keyword">class</span> <span class="type">Scanner</span> {<br/>
@@ -159,6 +159,16 @@
 </div>
 <div><div>
 <code>
+<span class="macro">@add(<span class="name">privates</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">next_ch</span>() {<br/>
+<span class="in2"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span>// <span class="type">std</span>::<span class="var">cout</span> &lt;&lt; (<span class="type">char</span>) <span class="var">_ch</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">privates</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
 <span class="macro">@add(<span class="name">publics</span>)</span><br/>
 <span class="in1"></span><span class="type">Symbol</span> <span class="fn">next</span>();<br/>
 <span class="macro">@end(<span class="name">publics</span>)</span><br/>
@@ -185,7 +195,7 @@
 <span class="in2"></span><span class="type">Symbol</span> <span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_null</span>;<br/>
 <span class="in2"></span><span class="keyword">while</span> (<span class="var">s</span> == <span class="type">Symbol</span>::<span class="var">s_null</span>) {<br/>
 <span class="in3"></span><span class="keyword">while</span> (<span class="var">_ch</span> != <span class="num">EOF</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">' '</span>) {<br/>
-<span class="in4"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in4"></span><span class="fn">next_ch</span>();<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="num">EOF</span>) {<br/>
 <span class="in4"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_eot</span>;<br/>
@@ -195,76 +205,76 @@
 <span class="in6"></span><span class="fn">string</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_string</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'#'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_neq</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'$'</span>) {<br/>
 <span class="in6"></span><span class="fn">hex_string</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_string</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'&amp;'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_and</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'('</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'*'</span>) {<br/>
 <span class="in7"></span><span class="fn">comment</span>();<br/>
 <span class="in6"></span>} <span class="keyword">else</span> {<br/>
 <span class="in7"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_lparen</span>;<br/>
 <span class="in6"></span>}<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">')'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_rparen</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'*'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_times</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'+'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_plus</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">','</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_comma</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'-'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_minus</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'.'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'.'</span>) {<br/>
-<span class="in7"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in7"></span><span class="fn">next_ch</span>();<br/>
 <span class="in7"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_upto</span>;<br/>
 <span class="in6"></span>} <span class="keyword">else</span> {<br/>
 <span class="in7"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_period</span>;<br/>
 <span class="in6"></span>}<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'/'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_rdiv</span>;<br/>
 <span class="in5"></span>}<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> &lt; <span class="str">':'</span>) {<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="fn">number</span>();<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">':'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'='</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_becomes</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_colon</span>;<br/>
 <span class="in5"></span>}<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">';'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_semicolon</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'&lt;'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'='</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_leq</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_lss</span>;<br/>
 <span class="in5"></span>}<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'='</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_eql</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'&gt;'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'='</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_geq</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
 <span class="in6"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_gtr</span>;<br/>
@@ -274,32 +284,32 @@
 <span class="in4"></span><span class="var">s</span> = <span class="fn">identifier</span>();<br/>
 <span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> &lt; <span class="str">'a'</span>) {<br/>
 <span class="in4"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'['</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_lbrak</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">']'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_rbrak</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'^'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_arrow</span>;<br/>
 <span class="in4"></span>}<br/>
 <span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> &lt; <span class="str">'{'</span>) {<br/>
 <span class="in4"></span><span class="var">s</span> = <span class="fn">identifier</span>();<br/>
 <span class="in3"></span>} <span class="keyword">else</span> {<br/>
 <span class="in4"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'{'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_lbrace</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'}'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_rbrace</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'|'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_bar</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'~'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_not</span>;<br/>
 <span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'\x7f'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_upto</span>;<br/>
 <span class="in4"></span>}<br/>
 <span class="in3"></span>}<br/>
@@ -321,22 +331,22 @@
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">comment</span>)</span><br/>
-<span class="in1"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in1"></span><span class="fn">next_ch</span>();<br/>
 <span class="in1"></span><span class="var">do</span> {<br/>
 <span class="in2"></span><span class="keyword">while</span> (<span class="var">_ch</span> != <span class="num">EOF</span> &amp;&amp; <span class="var">_ch</span> != <span class="str">'*'</span>) {<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'('</span>) {<br/>
-<span class="in4"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in4"></span><span class="fn">next_ch</span>();<br/>
 <span class="in4"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'*'</span>) {<br/>
 <span class="in5"></span><span class="fn">comment</span>();<br/>
 <span class="in4"></span>}<br/>
 <span class="in3"></span>} <span class="keyword">else</span> {<br/>
-<span class="in4"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in4"></span><span class="fn">next_ch</span>();<br/>
 <span class="in3"></span>}<br/>
 <span class="in2"></span>}<br/>
-<span class="in2"></span><span class="keyword">while</span> (<span class="var">_ch</span> == <span class="str">'*'</span>) { <span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>(); }<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">_ch</span> == <span class="str">'*'</span>) { <span class="fn">next_ch</span>(); }<br/>
 <span class="in1"></span>} <span class="keyword">while</span> (<span class="var">_ch</span> != <span class="num">EOF</span> &amp;&amp; <span class="var">_ch</span> != <span class="str">')'</span>);<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">_ch</span> != <span class="num">EOF</span>) {<br/>
-<span class="in2"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span><span class="fn">next_ch</span>();<br/>
 <span class="in1"></span>} <span class="keyword">else</span> {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"unterminated comment\n"</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -385,7 +395,7 @@
 <span class="in2"></span><span class="type">Symbol</span> <span class="var">s</span> { <span class="type">Symbol</span>::<span class="var">s_null</span> };<br/>
 <span class="in2"></span><span class="var">do</span> {<br/>
 <span class="in3"></span><span class="var">digits</span>.<span class="fn">push_back</span>(<span class="var">_ch</span> - <span class="str">'0'</span>);<br/>
-<span class="in3"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in2"></span>} <span class="keyword">while</span> ((<span class="var">_ch</span> &gt;= <span class="str">'0'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) || (<span class="var">_ch</span> &gt;= <span class="str">'A'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'F'</span>));<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'H'</span> || <span class="var">_ch</span> == <span class="str">'R'</span> || <span class="var">_ch</span> == <span class="str">'X'</span>) {<br/>
 <span class="in3"></span><span class="type">int</span> <span class="var">k</span> { <span class="num">0</span> };<br/>
@@ -408,14 +418,15 @@
 <span class="in4"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_int</span>;<br/>
 <span class="in4"></span><span class="var">_int_value</span> = <span class="var">k</span>;<br/>
 <span class="in3"></span>}<br/>
+<span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in2"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'.'</span>) {<br/>
-<span class="in3"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'.'</span>) {<br/>
 <span class="in4"></span><span class="var">_ch</span> = <span class="str">'\x7f'</span>;<br/>
 <span class="in4"></span><span class="type">int</span> <span class="var">k</span> = <span class="num">0</span>;<br/>
 <span class="in4"></span><span class="keyword">for</span> (<span class="type">const</span> <span class="type">auto</span> &amp;<span class="var">d</span> : <span class="var">digits</span>) {<br/>
 <span class="in5"></span><span class="keyword">if</span> (<span class="var">d</span> &lt; <span class="num">10</span>) {<br/>
-<span class="in6"></span><span class="keyword">if</span> (<span class="var">k</span> &lt; (<span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;::<span class="fn">max</span>() - <span class="var">d</span>) / <span class="num">10</span>) {<br/>
+<span class="in6"></span><span class="keyword">if</span> (<span class="var">k</span> &lt;= (<span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;::<span class="fn">max</span>() - <span class="var">d</span>) / <span class="num">10</span>) {<br/>
 <span class="in7"></span><span class="var">k</span> = <span class="var">k</span> * <span class="num">10</span> + <span class="var">d</span>;<br/>
 <span class="in6"></span>} <span class="keyword">else</span> {<br/>
 <span class="in7"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"too large\n"</span>;<br/>
@@ -437,22 +448,22 @@
 <span class="in4"></span><span class="keyword">while</span> (<span class="var">_ch</span> &gt;= <span class="str">'0'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) {<br/>
 <span class="in5"></span><span class="var">x</span> = <span class="var">x</span> * <span class="num">10</span>.<span class="num">0</span> + (<span class="var">_ch</span> - <span class="str">'0'</span>);<br/>
 <span class="in5"></span>++<span class="var">expo</span>;<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in4"></span>}<br/>
 <span class="in4"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'E'</span> || <span class="var">_ch</span> == <span class="str">'D'</span>) {<br/>
-<span class="in5"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in5"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span><span class="type">bool</span> <span class="var">neg_expo</span> { <span class="num">false</span> };<br/>
 <span class="in5"></span><span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'-'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span><span class="var">neg_expo</span> = <span class="num">true</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> == <span class="str">'+'</span>) {<br/>
-<span class="in6"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in6"></span><span class="fn">next_ch</span>();<br/>
 <span class="in5"></span>}<br/>
 <span class="in5"></span><span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">'0'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) {<br/>
 <span class="in6"></span><span class="type">int</span> <span class="var">scale</span> { <span class="num">0</span> };<br/>
 <span class="in6"></span><span class="keyword">while</span> (<span class="var">_ch</span> &gt;= <span class="num">0</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) {<br/>
 <span class="in7"></span><span class="var">scale</span> = <span class="var">scale</span> * <span class="num">10</span> + (<span class="var">_ch</span> - <span class="str">'0'</span>);<br/>
-<span class="in7"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in7"></span><span class="fn">next_ch</span>();<br/>
 <span class="in6"></span>}<br/>
 <span class="in6"></span><span class="keyword">if</span> (<span class="var">neg_expo</span>) {<br/>
 <span class="in7"></span><span class="var">expo</span> -= <span class="var">scale</span>;<br/>
@@ -463,31 +474,31 @@
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
 <span class="in6"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"digit?\n"</span>;<br/>
 <span class="in5"></span>}<br/>
-<span class="in5"></span><br/>
-<span class="in5"></span><span class="keyword">if</span> (<span class="var">expo</span> &lt; <span class="num">0</span>) {<br/>
-<span class="in6"></span><span class="keyword">if</span> (<span class="var">expo</span> &gt;= <span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">double</span>&gt;::<span class="var">min_exponent10</span>) {<br/>
-<span class="in7"></span><span class="var">x</span> = <span class="var">x</span> / <span class="fn">ten</span>(-<span class="var">expo</span>);<br/>
-<span class="in6"></span>} <span class="keyword">else</span> {<br/>
-<span class="in7"></span><span class="var">x</span> = <span class="num">0</span>.<span class="num">0</span>;<br/>
-<span class="in6"></span>}<br/>
-<span class="in5"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">expo</span> &gt; <span class="num">0</span>) {<br/>
-<span class="in6"></span><span class="keyword">if</span> (<span class="var">expo</span> &lt;= <span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">double</span>&gt;::<span class="var">max_exponent10</span>) {<br/>
-<span class="in7"></span><span class="var">x</span> = <span class="var">x</span> * <span class="fn">ten</span>(<span class="var">expo</span>);<br/>
-<span class="in6"></span>} <span class="keyword">else</span> {<br/>
-<span class="in7"></span><span class="var">x</span> = <span class="num">0</span>.<span class="num">0</span>;<br/>
-<span class="in7"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"too large\n"</span>;<br/>
-<span class="in6"></span>}<br/>
-<span class="in5"></span>}<br/>
-<br/>
-<span class="in5"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_real</span>;<br/>
-<span class="in5"></span><span class="var">_real_value</span> = <span class="var">x</span>;<br/>
 <span class="in4"></span>}<br/>
+<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">expo</span> &lt; <span class="num">0</span>) {<br/>
+<span class="in5"></span><span class="keyword">if</span> (<span class="var">expo</span> &gt;= <span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">double</span>&gt;::<span class="var">min_exponent10</span>) {<br/>
+<span class="in6"></span><span class="var">x</span> = <span class="var">x</span> / <span class="fn">ten</span>(-<span class="var">expo</span>);<br/>
+<span class="in5"></span>} <span class="keyword">else</span> {<br/>
+<span class="in6"></span><span class="var">x</span> = <span class="num">0</span>.<span class="num">0</span>;<br/>
+<span class="in5"></span>}<br/>
+<span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">expo</span> &gt; <span class="num">0</span>) {<br/>
+<span class="in5"></span><span class="keyword">if</span> (<span class="var">expo</span> &lt;= <span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">double</span>&gt;::<span class="var">max_exponent10</span>) {<br/>
+<span class="in6"></span><span class="var">x</span> = <span class="var">x</span> * <span class="fn">ten</span>(<span class="var">expo</span>);<br/>
+<span class="in5"></span>} <span class="keyword">else</span> {<br/>
+<span class="in6"></span><span class="var">x</span> = <span class="num">0</span>.<span class="num">0</span>;<br/>
+<span class="in6"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"too large\n"</span>;<br/>
+<span class="in5"></span>}<br/>
+<span class="in4"></span>}<br/>
+<br/>
+<span class="in4"></span><span class="var">s</span> = <span class="type">Symbol</span>::<span class="var">s_real</span>;<br/>
+<span class="in4"></span><span class="var">_real_value</span> = <span class="var">x</span>;<br/>
 <span class="in3"></span>}<br/>
 <span class="in2"></span>} <span class="keyword">else</span> {<br/>
 <span class="in3"></span><span class="type">int</span> <span class="var">k</span> = <span class="num">0</span>;<br/>
 <span class="in3"></span><span class="keyword">for</span> (<span class="type">const</span> <span class="type">auto</span> &amp;<span class="var">d</span>: <span class="var">digits</span>) {<br/>
 <span class="in4"></span><span class="keyword">if</span> (<span class="var">d</span> &lt; <span class="num">10</span>) {<br/>
-<span class="in5"></span><span class="keyword">if</span> (<span class="var">k</span> &lt; (<span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;::<span class="fn">max</span>() - <span class="var">d</span>) / <span class="num">10</span>) {<br/>
+<span class="in5"></span><span class="keyword">if</span> (<span class="var">k</span> &lt;= (<span class="type">std</span>::<span class="var">numeric_limits</span>&lt;<span class="type">int</span>&gt;::<span class="fn">max</span>() - <span class="var">d</span>) / <span class="num">10</span>) {<br/>
 <span class="in6"></span><span class="var">k</span> = <span class="var">k</span> * <span class="num">10</span> + <span class="var">d</span>;<br/>
 <span class="in5"></span>} <span class="keyword">else</span> {<br/>
 <span class="in6"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"too large\n"</span>;<br/>
@@ -522,7 +533,7 @@
 <span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">id</span>;<br/>
 <span class="in2"></span><span class="var">do</span> {<br/>
 <span class="in3"></span><span class="var">id</span> += (<span class="type">char</span>) <span class="var">_ch</span>;<br/>
-<span class="in3"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in2"></span>} <span class="keyword">while</span> ((<span class="var">_ch</span> &gt;= <span class="str">'0'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) || (<span class="var">_ch</span> &gt;= <span class="str">'A'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'Z'</span>) || (<span class="var">_ch</span> &gt;= <span class="str">'a'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'z'</span>));<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">found</span> = <span class="var">keywords</span>.<span class="fn">find</span>(<span class="var">id</span>);<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">found</span> != <span class="var">keywords</span>.<span class="fn">end</span>()) {<br/>
@@ -549,14 +560,14 @@
 <span class="macro">@add(<span class="name">impl</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="type">Scanner</span>::<span class="fn">string</span>() {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">str</span>;<br/>
-<span class="in2"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span><span class="fn">next_ch</span>();<br/>
 <span class="in2"></span><span class="keyword">while</span> (<span class="var">_ch</span> != <span class="num">EOF</span> &amp;&amp; <span class="var">_ch</span> != <span class="str">'"'</span>) {<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">' '</span>) {<br/>
 <span class="in4"></span><span class="var">str</span> += (<span class="type">char</span>) <span class="var">_ch</span>;<br/>
 <span class="in3"></span>}<br/>
-<span class="in3"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in2"></span>}<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">_ch</span> != <span class="num">EOF</span>) { <span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>(); }<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">_ch</span> != <span class="num">EOF</span>) { <span class="fn">next_ch</span>(); }<br/>
 <span class="in2"></span><span class="var">_string</span> = <span class="var">str</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">impl</span>)</span><br/>
@@ -574,11 +585,11 @@
 <span class="macro">@add(<span class="name">impl</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="type">Scanner</span>::<span class="fn">hex_string</span>() {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">str</span>;<br/>
-<span class="in2"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span><span class="fn">next_ch</span>();<br/>
 <span class="in2"></span><span class="type">int</span> <span class="var">m</span>, <span class="var">n</span>;<br/>
 <span class="in2"></span><span class="keyword">while</span> (<span class="var">_ch</span> != <span class="num">EOF</span> &amp;&amp; <span class="var">_ch</span> != <span class="str">'$'</span>) {<br/>
 <span class="in3"></span><span class="keyword">while</span> (<span class="var">_ch</span> != <span class="num">EOF</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">' '</span>) {<br/>
-<span class="in4"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in4"></span><span class="fn">next_ch</span>();<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">'0'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) {<br/>
 <span class="in4"></span><span class="var">m</span> = <span class="var">_ch</span> - <span class="str">'0'</span>;<br/>
@@ -587,7 +598,7 @@
 <span class="in3"></span>} <span class="keyword">else</span> {<br/>
 <span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"hexdig expected\n"</span>;<br/>
 <span class="in3"></span>}<br/>
-<span class="in3"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">'0'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'9'</span>) {<br/>
 <span class="in4"></span><span class="var">n</span> = <span class="var">_ch</span> - <span class="str">'0'</span>;<br/>
 <span class="in3"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_ch</span> &gt;= <span class="str">'A'</span> &amp;&amp; <span class="var">_ch</span> &lt;= <span class="str">'F'</span>) {<br/>
@@ -596,7 +607,7 @@
 <span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"hexdig expected\n"</span>;<br/>
 <span class="in3"></span>}<br/>
 <span class="in3"></span><span class="var">str</span> += (<span class="type">char</span>) (<span class="var">m</span> * <span class="num">16</span> + <span class="var">n</span>);<br/>
-<span class="in3"></span><span class="var">_ch</span> = <span class="var">_in</span>.<span class="fn">get</span>();<br/>
+<span class="in3"></span><span class="fn">next_ch</span>();<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">impl</span>)</span><br/>
