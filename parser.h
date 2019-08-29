@@ -34,84 +34,84 @@
 
 	void procedure_decl();
 
-#line 151 "parser.x"
+#line 167 "parser.x"
 
 	int _level = 0;
 	bool check_export();
 
-#line 173 "parser.x"
+#line 189 "parser.x"
 
 	void expression();
 
-#line 179 "parser.x"
+#line 195 "parser.x"
 
 	void type();
 
-#line 185 "parser.x"
+#line 201 "parser.x"
 
 	void ident_list();
 
-#line 246 "parser.x"
+#line 262 "parser.x"
 
 	void simple_expression();
 
-#line 271 "parser.x"
+#line 287 "parser.x"
 
 	void term();
 
-#line 298 "parser.x"
+#line 314 "parser.x"
 
 	void factor();
 
-#line 317 "parser.x"
+#line 333 "parser.x"
 
 	void qualident();
 
-#line 323 "parser.x"
+#line 339 "parser.x"
 
 	void param_list();
 
-#line 329 "parser.x"
+#line 345 "parser.x"
 
 	void set();
 
-#line 399 "parser.x"
+#line 415 "parser.x"
 
 	void array_type();
 
-#line 405 "parser.x"
+#line 421 "parser.x"
 
 	void record_type();
 
-#line 411 "parser.x"
+#line 427 "parser.x"
 
 	void procedure_type();
 
-#line 532 "parser.x"
+#line 548 "parser.x"
 
 	void stat_sequence();
 
-#line 580 "parser.x"
+#line 596 "parser.x"
 
 	void fp_section();
 
-#line 614 "parser.x"
+#line 630 "parser.x"
 
 	void formal_type();
 
-#line 651 "parser.x"
+#line 667 "parser.x"
 
 	void type_case();
 
-#line 657 "parser.x"
+#line 673 "parser.x"
 
 	void selector();
 
-#line 771 "parser.x"
+#line 787 "parser.x"
 
 	void parameter();
 
-#line 816 "parser.x"
+#line 832 "parser.x"
 
 	void element();
 
@@ -193,12 +193,28 @@
 				procedure_decl();
 				check(Symbol::s_semicolon, "no ;");
 			}
+			if (_symbol == Symbol::s_begin) {
+				_symbol = _scanner.next();
+				stat_sequence();
+			}
+			check(Symbol::s_end, "no END");
+			if (_symbol == Symbol::s_ident) {
+				if (_scanner.id() != _module) {
+					std::cerr << "no match\n";
+				}
+				_symbol = _scanner.next();
+			} else {
+				std::cerr << "identifier missing\n";
+			}
+			if (_symbol != Symbol::s_period) {
+				std::cerr << "period missing\n";
+			}
 		} else {
 			std::cerr << "must start with MODULE\n";
 		}
 	}
 
-#line 158 "parser.x"
+#line 174 "parser.x"
 
 	bool Parser::check_export() {
 		if (_symbol == Symbol::s_times) {
@@ -211,7 +227,7 @@
 		return false;
 	}
 
-#line 191 "parser.x"
+#line 207 "parser.x"
 
 	int Parser::declarations() {
 		if (_symbol < Symbol::s_const && _symbol != Symbol::s_end && _symbol != Symbol::s_return) {
@@ -264,7 +280,7 @@
 		return 0;
 	}
 
-#line 252 "parser.x"
+#line 268 "parser.x"
 
 	void Parser::expression() {
 		simple_expression();
@@ -281,7 +297,7 @@
 		}
 	}
 
-#line 277 "parser.x"
+#line 293 "parser.x"
 
 	void Parser::simple_expression() {
 		if (_symbol == Symbol::s_minus) {
@@ -300,7 +316,7 @@
 		}
 	}
 
-#line 304 "parser.x"
+#line 320 "parser.x"
 
 	void Parser::term() {
 		factor();
@@ -311,7 +327,7 @@
 		}
 	}
 
-#line 335 "parser.x"
+#line 351 "parser.x"
 
 	void Parser::factor() {
 		if (_symbol < Symbol::s_char || _symbol > Symbol::s_ident) {
@@ -357,7 +373,7 @@
 		}
 	}
 
-#line 383 "parser.x"
+#line 399 "parser.x"
 
 	void Parser::qualident() {
 		_symbol = _scanner.next();
@@ -371,7 +387,7 @@
 		}
 	}
 
-#line 417 "parser.x"
+#line 433 "parser.x"
 
 	void Parser::type() {
 		if (_symbol != Symbol::s_ident && _symbol < Symbol::s_array) {
@@ -405,7 +421,7 @@
 		}
 	}
 
-#line 453 "parser.x"
+#line 469 "parser.x"
 
 	void Parser::array_type() {
 		expression();
@@ -420,7 +436,7 @@
 		}
 	}
 
-#line 470 "parser.x"
+#line 486 "parser.x"
 
 	void Parser::ident_list() {
 		if (_symbol == Symbol::s_ident) {
@@ -443,7 +459,7 @@
 		}
 	}
 
-#line 495 "parser.x"
+#line 511 "parser.x"
 
 	void Parser::record_type() {
 		if (_symbol == Symbol::s_lparen) {
@@ -478,7 +494,7 @@
 		}
 	}
 
-#line 538 "parser.x"
+#line 554 "parser.x"
 
 	void Parser::procedure_decl() {
 		_symbol = _scanner.next();
@@ -518,7 +534,7 @@
 		}
 	}
 
-#line 586 "parser.x"
+#line 602 "parser.x"
 
 	void Parser::procedure_type() {
 		if (_symbol == Symbol::s_lparen) {
@@ -544,7 +560,7 @@
 		}
 	}
 
-#line 620 "parser.x"
+#line 636 "parser.x"
 
 	void Parser::fp_section() {
 		if (_symbol == Symbol::s_var) {
@@ -554,7 +570,7 @@
 		formal_type();
 	}
 
-#line 632 "parser.x"
+#line 648 "parser.x"
 
 	void Parser::formal_type() {
 		if (_symbol == Symbol::s_ident) {
@@ -571,7 +587,7 @@
 		}
 	}
 
-#line 663 "parser.x"
+#line 679 "parser.x"
 
 	void Parser::stat_sequence() {
 		do {
@@ -677,7 +693,7 @@
 		} while (_symbol <= Symbol::s_semicolon);
 	}
 
-#line 777 "parser.x"
+#line 793 "parser.x"
 
 	void Parser::param_list() {
 		if (_symbol != Symbol::s_rparen) {
@@ -692,13 +708,13 @@
 		}
 	}
 
-#line 794 "parser.x"
+#line 810 "parser.x"
 
 	void Parser::parameter() {
 		expression();
 	}
 
-#line 802 "parser.x"
+#line 818 "parser.x"
 
 	void Parser::type_case() {
 		if (_symbol == Symbol::s_ident) {
@@ -710,7 +726,7 @@
 		}
 	}
 
-#line 822 "parser.x"
+#line 838 "parser.x"
 
 	void Parser::set() {
 		if (_symbol >= Symbol::s_if) {
@@ -730,7 +746,7 @@
 		}
 	}
 
-#line 844 "parser.x"
+#line 860 "parser.x"
 
 	void Parser::element() {
 		expression();
@@ -740,7 +756,7 @@
 		}
 	}
 
-#line 856 "parser.x"
+#line 872 "parser.x"
 
 	void Parser::selector() {
 		while (_symbol == Symbol::s_lbrak || _symbol == Symbol::s_period || _symbol == Symbol::s_arrow /* || _symbol == Symbol::s_lparen */) {

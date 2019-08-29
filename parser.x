@@ -140,6 +140,22 @@
 				procedure_decl();
 				check(Symbol::s_semicolon, "no ;");
 			}
+			if (_symbol == Symbol::s_begin) {
+				_symbol = _scanner.next();
+				stat_sequence();
+			}
+			check(Symbol::s_end, "no END");
+			if (_symbol == Symbol::s_ident) {
+				if (_scanner.id() != _module) {
+					std::cerr << "no match\n";
+				}
+				_symbol = _scanner.next();
+			} else {
+				std::cerr << "identifier missing\n";
+			}
+			if (_symbol != Symbol::s_period) {
+				std::cerr << "period missing\n";
+			}
 		} else {
 			std::cerr << "must start with MODULE\n";
 		}

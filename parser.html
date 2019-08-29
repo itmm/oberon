@@ -165,6 +165,22 @@
 <span class="in4"></span><span class="fn">procedure_decl</span>();<br/>
 <span class="in4"></span><span class="fn">check</span>(<span class="type">Symbol</span>::<span class="var">s_semicolon</span>, <span class="str">"no ;"</span>);<br/>
 <span class="in3"></span>}<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_begin</span>) {<br/>
+<span class="in4"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in4"></span><span class="fn">stat_sequence</span>();<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="fn">check</span>(<span class="type">Symbol</span>::<span class="var">s_end</span>, <span class="str">"no END"</span>);<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_ident</span>) {<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">_scanner</span>.<span class="fn">id</span>() != <span class="var">_module</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"no match\n"</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in4"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in3"></span>} <span class="keyword">else</span> {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"identifier missing\n"</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_period</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"period missing\n"</span>;<br/>
+<span class="in3"></span>}<br/>
 <span class="in2"></span>} <span class="keyword">else</span> {<br/>
 <span class="in3"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"must start with MODULE\n"</span>;<br/>
 <span class="in2"></span>}<br/>
