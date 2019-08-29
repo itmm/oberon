@@ -60,7 +60,10 @@
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">publics</span>)</span><br/>
-<span class="in1"></span><span class="fn">Parser</span>(<span class="type">Scanner</span> &amp;<span class="var">sc</span>): <span class="var">_scanner</span> { <span class="var">sc</span> }, <span class="var">_symbol</span> { <span class="var">sc</span>.<span class="fn">next</span>() } { }<br/>
+<span class="in1"></span><span class="fn">Parser</span>(<span class="type">Scanner</span> &amp;<span class="var">sc</span>):<br/>
+<span class="in2"></span><span class="var">_scanner</span> { <span class="var">sc</span> },<br/>
+<span class="in2"></span><span class="var">_symbol</span> { <span class="var">sc</span>.<span class="fn">next</span>() }<br/>
+<span class="in1"></span>{ }<br/>
 <span class="macro">@end(<span class="name">publics</span>)</span><br/>
 </code></div>
 </div>
@@ -82,18 +85,24 @@
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">privates</span>)</span><br/>
-<span class="in1"></span><span class="type">void</span> <span class="fn">check</span>(<span class="type">Symbol</span> <span class="var">s</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">msg</span>);<br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">check</span>(<br/>
+<span class="in2"></span><span class="type">Symbol</span> <span class="var">s</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">msg</span><br/>
+<span class="in1"></span>);<br/>
 <span class="macro">@end(<span class="name">privates</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">privates</span>)</span><br/>
-<span class="in1"></span><span class="type">void</span> <span class="fn">err</span>(<span class="type">int</span> <span class="var">src</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">msg</span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"\n:"</span> &lt;&lt; <span class="var">_scanner</span>.<span class="fn">line</span>() &lt;&lt; <span class="str">" ("</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="var">src</span> &lt;&lt; <span class="str">") "</span>;<br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">err</span>(<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">src</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">msg</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"\n:"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="var">_scanner</span>.<span class="fn">line</span>();<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">" ("</span> &lt;&lt; <span class="var">src</span> &lt;&lt; <span class="str">") "</span>;<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="var">msg</span> &lt;&lt; <span class="str">" ["</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; (<span class="type">int</span>) <span class="var">_symbol</span> &lt;&lt; <span class="str">"]\n"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; (<span class="type">int</span>) <span class="var">_symbol</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"]\n"</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="in1"></span><span class="keyword">#define</span> <span class="fn">ERR</span>(<span class="var">MSG</span>) <span class="fn">err</span>(<span class="var">__LINE__</span>, (<span class="var">MSG</span>))<br/>
 <span class="macro">@end(<span class="name">privates</span>)</span><br/>
@@ -102,7 +111,10 @@
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">impl</span>)</span><br/>
-<span class="in1"></span><span class="type">void</span> <span class="type">Parser</span>::<span class="fn">check</span>(<span class="type">Symbol</span> <span class="var">s</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">msg</span>) {<br/>
+<span class="in1"></span><span class="type">void</span> <span class="type">Parser</span>::<span class="fn">check</span>(<br/>
+<span class="in2"></span><span class="type">Symbol</span> <span class="var">s</span>,<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">msg</span><br/>
+<span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="var">s</span>) {<br/>
 <span class="in3"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
 <span class="in2"></span>} <span class="keyword">else</span> {<br/>
@@ -250,6 +262,7 @@
 <code>
 <span class="macro">@add(<span class="name">impl</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="type">Parser</span>::<span class="fn">declarations</span>() {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">declarations</span>)</span>;<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">_symbol</span> &lt; <span class="type">Symbol</span>::<span class="var">s_const</span> &amp;&amp; <span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_end</span> &amp;&amp; <span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_return</span>) {<br/>
 <span class="in3"></span><span class="fn">ERR</span>(<span class="str">"declaration?"</span>);<br/>
 <span class="in3"></span><span class="var">do</span> {<br/>
@@ -300,6 +313,96 @@
 <span class="in2"></span><span class="keyword">return</span> <span class="num">0</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">impl</span>)</span>;<br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">declarations</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<br/>
+<span class="in2"></span><span class="var">_symbol</span> &lt; <span class="type">Symbol</span>::<span class="var">s_const</span> &amp;&amp;<br/>
+<span class="in2"></span><span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_end</span> &amp;&amp;<br/>
+<span class="in2"></span><span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_return</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="fn">ERR</span>(<span class="str">"declaration?"</span>);<br/>
+<span class="in2"></span><span class="var">do</span> {<br/>
+<span class="in3"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in2"></span>} <span class="keyword">while</span> (<br/>
+<span class="in3"></span><span class="var">_symbol</span> &lt; <span class="type">Symbol</span>::<span class="var">s_const</span> &amp;&amp;<br/>
+<span class="in3"></span><span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_end</span> &amp;&amp;<br/>
+<span class="in3"></span><span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_return</span><br/>
+<span class="in2"></span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">declarations</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">declarations</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_const</span>) {<br/>
+<span class="in2"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">const decl</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">declarations</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">const decl</span>)</span><br/>
+<span class="in1"></span><span class="keyword">while</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_ident</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">id</span> { <span class="var">_scanner</span>.<span class="fn">id</span>() };<br/>
+<span class="in2"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in2"></span><span class="fn">check_export</span>();<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_eql</span>) {<br/>
+<span class="in3"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in2"></span>} <span class="keyword">else</span> {<br/>
+<span class="in3"></span><span class="fn">ERR</span>(<span class="str">"= ?"</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="fn">expression</span>();<br/>
+<span class="in2"></span><span class="fn">check</span>(<br/>
+<span class="in3"></span><span class="type">Symbol</span>::<span class="var">s_semicolon</span>,<br/>
+<span class="in3"></span><span class="str">"; missing"</span><br/>
+<span class="in2"></span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">const decl</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">declarations</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_type</span>) {<br/>
+<span class="in2"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_ident</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">id</span> { <span class="var">_scanner</span>.<span class="fn">id</span>() };<br/>
+<span class="in3"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in3"></span><span class="fn">check_export</span>();<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_eql</span>) {<br/>
+<span class="in4"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in3"></span>} <span class="keyword">else</span> {<br/>
+<span class="in4"></span><span class="fn">ERR</span>(<span class="str">"= ?"</span>);<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="fn">type</span>();<br/>
+<span class="in3"></span><span class="fn">check</span>(<span class="type">Symbol</span>::<span class="var">s_semicolon</span>, <span class="str">"; missing"</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">declarations</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">declarations</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_var</span>) {<br/>
+<span class="in2"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_ident</span>) {<br/>
+<span class="in3"></span><span class="fn">ident_list</span>();<br/>
+<span class="in3"></span><span class="fn">type</span>();<br/>
+<span class="in3"></span><span class="fn">check</span>(<span class="type">Symbol</span>::<span class="var">s_semicolon</span>, <span class="str">"; missing"</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">_symbol</span> &gt;= <span class="type">Symbol</span>::<span class="var">s_const</span> &amp;&amp; <span class="var">_symbol</span> &lt;= <span class="type">Symbol</span>::<span class="var">s_var</span>) {<br/>
+<span class="in2"></span><span class="fn">ERR</span>(<span class="str">"declaration in bad order"</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">return</span> <span class="num">0</span>;<br/>
+<span class="macro">@end(<span class="name">declarations</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
@@ -895,7 +998,10 @@
 <span class="in1"></span><span class="type">void</span> <span class="type">Parser</span>::<span class="fn">type_case</span>() {<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_ident</span>) {<br/>
 <span class="in3"></span><span class="fn">qualident</span>();<br/>
-<span class="in3"></span><span class="fn">check</span>(<span class="type">Symbol</span>::<span class="var">s_colon</span>, <span class="str">": expected"</span>);<br/>
+<span class="in3"></span><span class="fn">check</span>(<br/>
+<span class="in4"></span><span class="type">Symbol</span>::<span class="var">s_colon</span>,<br/>
+<span class="in4"></span><span class="str">": expected"</span><br/>
+<span class="in3"></span>);<br/>
 <span class="in3"></span><span class="fn">stat_sequence</span>();<br/>
 <span class="in2"></span>} <span class="keyword">else</span> {<br/>
 <span class="in3"></span><span class="fn">ERR</span>(<span class="str">"type id expected"</span>);<br/>
@@ -915,23 +1021,42 @@
 <code>
 <span class="macro">@add(<span class="name">impl</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="type">Parser</span>::<span class="fn">set</span>() {<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">_symbol</span> &gt;= <span class="type">Symbol</span>::<span class="var">s_if</span>) {<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_rbrace</span>) {<br/>
-<span class="in4"></span><span class="fn">ERR</span>(<span class="str">"} missing"</span>);<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span>} <span class="keyword">else</span> {<br/>
-<span class="in3"></span><span class="fn">element</span>();<br/>
-<span class="in3"></span><span class="keyword">while</span> (<span class="var">_symbol</span> &lt; <span class="type">Symbol</span>::<span class="var">s_rparen</span> || <span class="var">_symbol</span> &gt; <span class="type">Symbol</span>::<span class="var">s_rbrace</span>) {<br/>
-<span class="in4"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_comma</span>) {<br/>
-<span class="in5"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
-<span class="in4"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_rbrace</span>) {<br/>
-<span class="in5"></span><span class="fn">ERR</span>(<span class="str">"missing comma"</span>);<br/>
-<span class="in4"></span>}<br/>
-<span class="in4"></span><span class="fn">element</span>();<br/>
-<span class="in3"></span>}<br/>
-<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">set</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">impl</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">set</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">_symbol</span> &gt;= <span class="type">Symbol</span>::<span class="var">s_if</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_rbrace</span>) {<br/>
+<span class="in3"></span><span class="fn">ERR</span>(<span class="str">"} missing"</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>} <span class="keyword">else</span> {<br/>
+<span class="in2"></span><span class="fn">element</span>();<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">set elements</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">set</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">set elements</span>)</span><br/>
+<span class="in1"></span><span class="keyword">while</span> (<br/>
+<span class="in2"></span><span class="var">_symbol</span> &lt; <span class="type">Symbol</span>::<span class="var">s_rparen</span> ||<br/>
+<span class="in2"></span><span class="var">_symbol</span> &gt; <span class="type">Symbol</span>::<span class="var">s_rbrace</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_comma</span>) {<br/>
+<span class="in3"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
+<span class="in2"></span>} <span class="keyword">else</span> <span class="keyword">if</span> (<br/>
+<span class="in3"></span><span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_rbrace</span><br/>
+<span class="in2"></span>) {<br/>
+<span class="in3"></span><span class="fn">ERR</span>(<span class="str">"missing comma"</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="fn">element</span>();<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">set elements</span>)</span><br/>
 </code></div>
 </div>
 <div><div>

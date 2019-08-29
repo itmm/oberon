@@ -17,111 +17,117 @@
 	Scanner &_scanner;
 	Symbol _symbol;
 
-#line 56 "parser.x"
+#line 59 "parser.x"
 
 	int _version;
 	std::string _module;
 
-#line 63 "parser.x"
+#line 66 "parser.x"
 
-	void check(Symbol s, const std::string &msg);
+	void check(
+		Symbol s, const std::string &msg
+	);
 
-#line 69 "parser.x"
+#line 74 "parser.x"
 
-	void err(int src, const std::string &msg) {
-		std::cerr << "\n:" << _scanner.line() << " (";
-		std::cerr << src << ") ";
+	void err(
+		int src, const std::string &msg
+	) {
+		std::cerr << "\n:";
+		std::cerr << _scanner.line();
+		std::cerr << " (" << src << ") ";
 		std::cerr << msg << " [";
-		std::cerr << (int) _symbol << "]\n";
+		std::cerr << (int) _symbol;
+		std::cerr << "]\n";
 	}
 	#define ERR(MSG) err(__LINE__, (MSG))
 
-#line 93 "parser.x"
+#line 105 "parser.x"
 
 	int declarations();
 
-#line 99 "parser.x"
+#line 111 "parser.x"
 
 	void procedure_decl();
 
-#line 179 "parser.x"
+#line 191 "parser.x"
 
 	int _level = 0;
 	bool check_export();
 
-#line 201 "parser.x"
+#line 213 "parser.x"
 
 	void expression();
 
-#line 207 "parser.x"
+#line 219 "parser.x"
 
 	void type();
 
-#line 213 "parser.x"
+#line 225 "parser.x"
 
 	void ident_list();
 
-#line 274 "parser.x"
+#line 372 "parser.x"
 
 	void simple_expression();
 
-#line 299 "parser.x"
+#line 397 "parser.x"
 
 	void term();
 
-#line 326 "parser.x"
+#line 424 "parser.x"
 
 	void factor();
 
-#line 345 "parser.x"
+#line 443 "parser.x"
 
 	void qualident();
 
-#line 351 "parser.x"
+#line 449 "parser.x"
 
 	void param_list();
 
-#line 357 "parser.x"
+#line 455 "parser.x"
 
 	void set();
 
-#line 427 "parser.x"
+#line 525 "parser.x"
 
 	void array_type();
 
-#line 433 "parser.x"
+#line 531 "parser.x"
 
 	void record_type();
 
-#line 439 "parser.x"
+#line 537 "parser.x"
 
 	void procedure_type();
 
-#line 560 "parser.x"
+#line 658 "parser.x"
 
 	void stat_sequence();
 
-#line 608 "parser.x"
+#line 706 "parser.x"
 
 	void fp_section();
 
-#line 642 "parser.x"
+#line 740 "parser.x"
 
 	void formal_type();
 
-#line 679 "parser.x"
+#line 777 "parser.x"
 
 	void type_case();
 
-#line 685 "parser.x"
+#line 783 "parser.x"
 
 	void selector();
 
-#line 799 "parser.x"
+#line 897 "parser.x"
 
 	void parameter();
 
-#line 844 "parser.x"
+#line 945 "parser.x"
 
 	void element();
 
@@ -131,9 +137,12 @@
 			
 #line 44 "parser.x"
 
-	Parser(Scanner &sc): _scanner { sc }, _symbol { sc.next() } { }
+	Parser(Scanner &sc):
+		_scanner { sc },
+		_symbol { sc.next() }
+	{ }
 
-#line 50 "parser.x"
+#line 53 "parser.x"
 
 	void module();
 
@@ -142,9 +151,12 @@
 	};
 	#if parser_IMPL
 		
-#line 81 "parser.x"
+#line 90 "parser.x"
 
-	void Parser::check(Symbol s, const std::string &msg) {
+	void Parser::check(
+		Symbol s,
+		const std::string &msg
+	) {
 		if (_symbol == s) {
 			_symbol = _scanner.next();
 		} else {
@@ -152,7 +164,7 @@
 		}
 	}
 
-#line 105 "parser.x"
+#line 117 "parser.x"
 
 	void Parser::module() {
 		std::cout << "  compiling ";
@@ -224,7 +236,7 @@
 		}
 	}
 
-#line 186 "parser.x"
+#line 198 "parser.x"
 
 	bool Parser::check_export() {
 		if (_symbol == Symbol::s_times) {
@@ -237,9 +249,89 @@
 		return false;
 	}
 
-#line 219 "parser.x"
+#line 231 "parser.x"
 
 	int Parser::declarations() {
+		
+#line 287 "parser.x"
+
+	if (
+		_symbol < Symbol::s_const &&
+		_symbol != Symbol::s_end &&
+		_symbol != Symbol::s_return
+	) {
+		ERR("declaration?");
+		do {
+			_symbol = _scanner.next();
+		} while (
+			_symbol < Symbol::s_const &&
+			_symbol != Symbol::s_end &&
+			_symbol != Symbol::s_return
+		);
+	}
+
+#line 306 "parser.x"
+
+	if (_symbol == Symbol::s_const) {
+		_symbol = _scanner.next();
+		
+#line 315 "parser.x"
+
+	while (_symbol == Symbol::s_ident) {
+		std::string id { _scanner.id() };
+		_symbol = _scanner.next();
+		check_export();
+		if (_symbol == Symbol::s_eql) {
+			_symbol = _scanner.next();
+		} else {
+			ERR("= ?");
+		}
+		expression();
+		check(
+			Symbol::s_semicolon,
+			"; missing"
+		);
+	}
+
+#line 309 "parser.x"
+;
+	}
+
+#line 335 "parser.x"
+
+	if (_symbol == Symbol::s_type) {
+		_symbol = _scanner.next();
+		while (_symbol == Symbol::s_ident) {
+			std::string id { _scanner.id() };
+			_symbol = _scanner.next();
+			check_export();
+			if (_symbol == Symbol::s_eql) {
+				_symbol = _scanner.next();
+			} else {
+				ERR("= ?");
+			}
+			type();
+			check(Symbol::s_semicolon, "; missing");
+		}
+	}
+
+#line 355 "parser.x"
+
+	if (_symbol == Symbol::s_var) {
+		_symbol = _scanner.next();
+		while (_symbol == Symbol::s_ident) {
+			ident_list();
+			type();
+			check(Symbol::s_semicolon, "; missing");
+		}
+	}
+	if (_symbol >= Symbol::s_const && _symbol <= Symbol::s_var) {
+		ERR("declaration in bad order");
+	}
+	return 0;
+
+#line 233 "parser.x"
+;
 		if (_symbol < Symbol::s_const && _symbol != Symbol::s_end && _symbol != Symbol::s_return) {
 			ERR("declaration?");
 			do {
@@ -290,7 +382,7 @@
 		return 0;
 	}
 
-#line 280 "parser.x"
+#line 378 "parser.x"
 
 	void Parser::expression() {
 		simple_expression();
@@ -307,7 +399,7 @@
 		}
 	}
 
-#line 305 "parser.x"
+#line 403 "parser.x"
 
 	void Parser::simple_expression() {
 		if (_symbol == Symbol::s_minus) {
@@ -326,7 +418,7 @@
 		}
 	}
 
-#line 332 "parser.x"
+#line 430 "parser.x"
 
 	void Parser::term() {
 		factor();
@@ -337,7 +429,7 @@
 		}
 	}
 
-#line 363 "parser.x"
+#line 461 "parser.x"
 
 	void Parser::factor() {
 		if (_symbol < Symbol::s_char || _symbol > Symbol::s_ident) {
@@ -383,7 +475,7 @@
 		}
 	}
 
-#line 411 "parser.x"
+#line 509 "parser.x"
 
 	void Parser::qualident() {
 		_symbol = _scanner.next();
@@ -397,7 +489,7 @@
 		}
 	}
 
-#line 445 "parser.x"
+#line 543 "parser.x"
 
 	void Parser::type() {
 		if (_symbol != Symbol::s_ident && _symbol < Symbol::s_array) {
@@ -431,7 +523,7 @@
 		}
 	}
 
-#line 481 "parser.x"
+#line 579 "parser.x"
 
 	void Parser::array_type() {
 		expression();
@@ -446,7 +538,7 @@
 		}
 	}
 
-#line 498 "parser.x"
+#line 596 "parser.x"
 
 	void Parser::ident_list() {
 		if (_symbol == Symbol::s_ident) {
@@ -469,7 +561,7 @@
 		}
 	}
 
-#line 523 "parser.x"
+#line 621 "parser.x"
 
 	void Parser::record_type() {
 		if (_symbol == Symbol::s_lparen) {
@@ -504,7 +596,7 @@
 		}
 	}
 
-#line 566 "parser.x"
+#line 664 "parser.x"
 
 	void Parser::procedure_decl() {
 		_symbol = _scanner.next();
@@ -544,7 +636,7 @@
 		}
 	}
 
-#line 614 "parser.x"
+#line 712 "parser.x"
 
 	void Parser::procedure_type() {
 		if (_symbol == Symbol::s_lparen) {
@@ -570,7 +662,7 @@
 		}
 	}
 
-#line 648 "parser.x"
+#line 746 "parser.x"
 
 	void Parser::fp_section() {
 		if (_symbol == Symbol::s_var) {
@@ -580,7 +672,7 @@
 		formal_type();
 	}
 
-#line 660 "parser.x"
+#line 758 "parser.x"
 
 	void Parser::formal_type() {
 		if (_symbol == Symbol::s_ident) {
@@ -597,7 +689,7 @@
 		}
 	}
 
-#line 691 "parser.x"
+#line 789 "parser.x"
 
 	void Parser::stat_sequence() {
 		do {
@@ -703,7 +795,7 @@
 		} while (_symbol <= Symbol::s_semicolon);
 	}
 
-#line 805 "parser.x"
+#line 903 "parser.x"
 
 	void Parser::param_list() {
 		if (_symbol != Symbol::s_rparen) {
@@ -718,45 +810,65 @@
 		}
 	}
 
-#line 822 "parser.x"
+#line 920 "parser.x"
 
 	void Parser::parameter() {
 		expression();
 	}
 
-#line 830 "parser.x"
+#line 928 "parser.x"
 
 	void Parser::type_case() {
 		if (_symbol == Symbol::s_ident) {
 			qualident();
-			check(Symbol::s_colon, ": expected");
+			check(
+				Symbol::s_colon,
+				": expected"
+			);
 			stat_sequence();
 		} else {
 			ERR("type id expected");
 		}
 	}
 
-#line 850 "parser.x"
+#line 951 "parser.x"
 
 	void Parser::set() {
-		if (_symbol >= Symbol::s_if) {
-			if (_symbol != Symbol::s_rbrace) {
-				ERR("} missing");
-			}
-		} else {
-			element();
-			while (_symbol < Symbol::s_rparen || _symbol > Symbol::s_rbrace) {
-				if (_symbol == Symbol::s_comma) {
-					_symbol = _scanner.next();
-				} else if (_symbol != Symbol::s_rbrace) {
-					ERR("missing comma");
-				}
-				element();
-			}
+		
+#line 959 "parser.x"
+
+	if (_symbol >= Symbol::s_if) {
+		if (_symbol != Symbol::s_rbrace) {
+			ERR("} missing");
 		}
+	} else {
+		element();
+		
+#line 972 "parser.x"
+
+	while (
+		_symbol < Symbol::s_rparen ||
+		_symbol > Symbol::s_rbrace
+	) {
+		if (_symbol == Symbol::s_comma) {
+			_symbol = _scanner.next();
+		} else if (
+			_symbol != Symbol::s_rbrace
+		) {
+			ERR("missing comma");
+		}
+		element();
 	}
 
-#line 872 "parser.x"
+#line 966 "parser.x"
+;
+	}
+
+#line 953 "parser.x"
+;
+	}
+
+#line 990 "parser.x"
 
 	void Parser::element() {
 		expression();
@@ -766,7 +878,7 @@
 		}
 	}
 
-#line 884 "parser.x"
+#line 1002 "parser.x"
 
 	void Parser::selector() {
 		while (_symbol == Symbol::s_lbrak || _symbol == Symbol::s_period || _symbol == Symbol::s_arrow /* || _symbol == Symbol::s_lparen */) {

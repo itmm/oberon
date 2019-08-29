@@ -42,7 +42,10 @@
 
 ```
 @def(publics)
-	Parser(Scanner &sc): _scanner { sc }, _symbol { sc.next() } { }
+	Parser(Scanner &sc):
+		_scanner { sc },
+		_symbol { sc.next() }
+	{ }
 @end(publics)
 ```
 
@@ -61,17 +64,23 @@
 
 ```
 @add(privates)
-	void check(Symbol s, const std::string &msg);
+	void check(
+		Symbol s, const std::string &msg
+	);
 @end(privates)
 ```
 
 ```
 @add(privates)
-	void err(int src, const std::string &msg) {
-		std::cerr << "\n:" << _scanner.line() << " (";
-		std::cerr << src << ") ";
+	void err(
+		int src, const std::string &msg
+	) {
+		std::cerr << "\n:";
+		std::cerr << _scanner.line();
+		std::cerr << " (" << src << ") ";
 		std::cerr << msg << " [";
-		std::cerr << (int) _symbol << "]\n";
+		std::cerr << (int) _symbol;
+		std::cerr << "]\n";
 	}
 	#define ERR(MSG) err(__LINE__, (MSG))
 @end(privates)
@@ -79,7 +88,10 @@
 
 ```
 @def(impl)
-	void Parser::check(Symbol s, const std::string &msg) {
+	void Parser::check(
+		Symbol s,
+		const std::string &msg
+	) {
 		if (_symbol == s) {
 			_symbol = _scanner.next();
 		} else {
@@ -218,6 +230,7 @@
 ```
 @add(impl)
 	int Parser::declarations() {
+		@put(declarations);
 		if (_symbol < Symbol::s_const && _symbol != Symbol::s_end && _symbol != Symbol::s_return) {
 			ERR("declaration?");
 			do {
@@ -268,6 +281,91 @@
 		return 0;
 	}
 @end(impl);
+```
+
+```
+@def(declarations)
+	if (
+		_symbol < Symbol::s_const &&
+		_symbol != Symbol::s_end &&
+		_symbol != Symbol::s_return
+	) {
+		ERR("declaration?");
+		do {
+			_symbol = _scanner.next();
+		} while (
+			_symbol < Symbol::s_const &&
+			_symbol != Symbol::s_end &&
+			_symbol != Symbol::s_return
+		);
+	}
+@end(declarations)
+```
+
+```
+@add(declarations)
+	if (_symbol == Symbol::s_const) {
+		_symbol = _scanner.next();
+		@put(const decl);
+	}
+@end(declarations)
+```
+
+```
+@def(const decl)
+	while (_symbol == Symbol::s_ident) {
+		std::string id { _scanner.id() };
+		_symbol = _scanner.next();
+		check_export();
+		if (_symbol == Symbol::s_eql) {
+			_symbol = _scanner.next();
+		} else {
+			ERR("= ?");
+		}
+		expression();
+		check(
+			Symbol::s_semicolon,
+			"; missing"
+		);
+	}
+@end(const decl)
+```
+
+```
+@add(declarations)
+	if (_symbol == Symbol::s_type) {
+		_symbol = _scanner.next();
+		while (_symbol == Symbol::s_ident) {
+			std::string id { _scanner.id() };
+			_symbol = _scanner.next();
+			check_export();
+			if (_symbol == Symbol::s_eql) {
+				_symbol = _scanner.next();
+			} else {
+				ERR("= ?");
+			}
+			type();
+			check(Symbol::s_semicolon, "; missing");
+		}
+	}
+@end(declarations)
+```
+
+```
+@add(declarations)
+	if (_symbol == Symbol::s_var) {
+		_symbol = _scanner.next();
+		while (_symbol == Symbol::s_ident) {
+			ident_list();
+			type();
+			check(Symbol::s_semicolon, "; missing");
+		}
+	}
+	if (_symbol >= Symbol::s_const && _symbol <= Symbol::s_var) {
+		ERR("declaration in bad order");
+	}
+	return 0;
+@end(declarations)
 ```
 
 ```
@@ -831,7 +929,10 @@
 	void Parser::type_case() {
 		if (_symbol == Symbol::s_ident) {
 			qualident();
-			check(Symbol::s_colon, ": expected");
+			check(
+				Symbol::s_colon,
+				": expected"
+			);
 			stat_sequence();
 		} else {
 			ERR("type id expected");
@@ -849,23 +950,40 @@
 ```
 @add(impl)
 	void Parser::set() {
-		if (_symbol >= Symbol::s_if) {
-			if (_symbol != Symbol::s_rbrace) {
-				ERR("} missing");
-			}
-		} else {
-			element();
-			while (_symbol < Symbol::s_rparen || _symbol > Symbol::s_rbrace) {
-				if (_symbol == Symbol::s_comma) {
-					_symbol = _scanner.next();
-				} else if (_symbol != Symbol::s_rbrace) {
-					ERR("missing comma");
-				}
-				element();
-			}
-		}
+		@put(set);
 	}
 @end(impl)
+```
+
+```
+@def(set)
+	if (_symbol >= Symbol::s_if) {
+		if (_symbol != Symbol::s_rbrace) {
+			ERR("} missing");
+		}
+	} else {
+		element();
+		@put(set elements);
+	}
+@end(set)
+```
+
+```
+@def(set elements)
+	while (
+		_symbol < Symbol::s_rparen ||
+		_symbol > Symbol::s_rbrace
+	) {
+		if (_symbol == Symbol::s_comma) {
+			_symbol = _scanner.next();
+		} else if (
+			_symbol != Symbol::s_rbrace
+		) {
+			ERR("missing comma");
+		}
+		element();
+	}
+@end(set elements)
 ```
 
 ```
