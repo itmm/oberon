@@ -126,6 +126,25 @@
 </div>
 <div><div>
 <code>
+<span class="macro">@inc(<span class="name"><a href="builder.html">builder.x</a></span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">includes</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">"builder.h"</span><br/>
+<span class="macro">@end(<span class="name">includes</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">privates</span>)</span><br/>
+<span class="in1"></span><span class="type">Builder</span> <span class="var">_builder</span> { };<br/>
+<span class="macro">@end(<span class="name">privates</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
 <span class="macro">@add(<span class="name">privates</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="fn">declarations</span>();<br/>
 <span class="macro">@end(<span class="name">privates</span>)</span>;<br/>
@@ -152,6 +171,7 @@
 <span class="in3"></span>} <span class="keyword">else</span> {<br/>
 <span class="in4"></span><span class="var">_version</span> = <span class="num">1</span>;<br/>
 <span class="in3"></span>}<br/>
+<span class="in3"></span><span class="var">_builder</span>.<span class="fn">open_scope</span>();<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_symbol</span> == <span class="type">Symbol</span>::<span class="var">s_ident</span>) {<br/>
 <span class="in4"></span><span class="var">_module</span> = <span class="var">_scanner</span>.<span class="fn">id</span>();<br/>
 <span class="in4"></span><span class="var">_symbol</span> = <span class="var">_scanner</span>.<span class="fn">next</span>();<br/>
@@ -206,6 +226,7 @@
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">_symbol</span> != <span class="type">Symbol</span>::<span class="var">s_period</span>) {<br/>
 <span class="in4"></span><span class="fn">ERR</span>(<span class="str">"period missing"</span>);<br/>
 <span class="in3"></span>}<br/>
+<span class="in3"></span><span class="var">_builder</span>.<span class="fn">close_scope</span>();<br/>
 <span class="in2"></span>} <span class="keyword">else</span> {<br/>
 <span class="in3"></span><span class="fn">ERR</span>(<span class="str">"must start with MODULE"</span>);<br/>
 <span class="in2"></span>}<br/>

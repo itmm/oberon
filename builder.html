@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Type-Builder for Oberon</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Type-Builder for Oberon</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Type-Builder for Oberon</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">file: builder.h</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#pragma</span> <span class="keyword">once</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">includes</span>)</span>;<br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">globals</span>)</span>;<br/>
+<span class="in1"></span><span class="keyword">class</span> <span class="type">Builder</span> {<br/>
+<span class="in2"></span><span class="keyword">private</span>:<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">privates</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">public</span>:<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">publics</span>)</span>;<br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="keyword">#if</span> <span class="var">builder_IMPL</span><br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">impl</span>)</span>;<br/>
+<span class="in1"></span><span class="keyword">#endif</span><br/>
+<span class="macro">@End(<span class="name">file: builder.h</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">file: builder.cpp</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#define</span> <span class="var">builder_IMPL</span> <span class="num">1</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">"builder.h"</span><br/>
+<span class="macro">@End(<span class="name">file: builder.cpp</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">publics</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">open_scope</span>();<br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">close_scope</span>();<br/>
+<span class="macro">@end(<span class="name">publics</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">impl</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="type">Builder</span>::<span class="fn">open_scope</span>() {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">open scope</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">impl</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">impl</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="type">Builder</span>::<span class="fn">close_scope</span>() {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">close scope</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">impl</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">enum</span> <span class="keyword">class</span> <span class="type">Obj_Class</span> {<br/>
+<span class="in2"></span><span class="var">c_head</span> = <span class="num">0</span>, <span class="var">c_const</span> = <span class="num">1</span>,<br/>
+<span class="in2"></span><span class="var">c_var</span> = <span class="num">2</span>, <span class="var">c_par</span> = <span class="num">3</span>, <span class="var">c_fld</span> = <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="var">c_typ</span> = <span class="num">5</span>, <span class="var">c_sproc</span> = <span class="num">6</span>,<br/>
+<span class="in2"></span><span class="var">c_sfunc</span> = <span class="num">7</span>, <span class="var">c_mod</span> = <span class="num">8</span><br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">includes</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="type">string</span>&gt;<br/>
+<span class="macro">@end(<span class="name">includes</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">class</span> <span class="type">Object</span> {<br/>
+<span class="in2"></span><span class="keyword">private</span>:<br/>
+<span class="in3"></span><span class="type">Obj_Class</span> <span class="var">_class</span>;<br/>
+<span class="in3"></span><span class="type">bool</span> <span class="var">_exported</span> { <span class="num">false</span> };<br/>
+<span class="in3"></span><span class="type">bool</span> <span class="var">_readonly</span> { <span class="num">false</span> };<br/>
+<span class="in3"></span><span class="type">Object</span> *<span class="var">_next</span> = <span class="num">nullptr</span>;<br/>
+<span class="in3"></span><span class="type">Object</span> *<span class="var">_descendants</span> = <span class="num">nullptr</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">_name</span>;<br/>
+<span class="in2"></span><span class="keyword">public</span>:<br/>
+<span class="in3"></span><span class="fn">Object</span>(<span class="type">Obj_Class</span> <span class="var">c</span>, <span class="type">Object</span> *<span class="var">d</span>):<br/>
+<span class="in4"></span><span class="var">_class</span> { <span class="var">c</span> },<br/>
+<span class="in4"></span><span class="var">_descendants</span> { <span class="var">d</span> }<br/>
+<span class="in3"></span>{ }<br/>
+<br/>
+<span class="in3"></span><span class="type">Object</span> *<span class="fn">descendants</span>() {<br/>
+<span class="in4"></span><span class="keyword">return</span> <span class="var">_descendants</span>;<br/>
+<span class="in3"></span>}<br/>
+<br/>
+<span class="in3"></span>~<span class="fn">Object</span>() {<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">_descendants</span>) {<br/>
+<span class="in5"></span><span class="keyword">delete</span> <span class="var">_descendants</span>;<br/>
+<span class="in5"></span><span class="var">_descendants</span> = <span class="num">nullptr</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in3"></span>}<br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">privates</span>)</span><br/>
+<span class="in1"></span><span class="type">Object</span> *<span class="var">_top_scope</span> { <span class="num">nullptr</span> };<br/>
+<span class="macro">@end(<span class="name">privates</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">publics</span>)</span><br/>
+<span class="in1"></span>~<span class="fn">Builder</span>() {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">_top_scope</span>) {<br/>
+<span class="in3"></span><span class="keyword">delete</span> <span class="var">_top_scope</span>;<br/>
+<span class="in3"></span><span class="var">_top_scope</span> = <span class="num">nullptr</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">publics</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">open scope</span>)</span><br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">o</span> { <span class="keyword">new</span> <span class="type">Object</span> { <span class="type">Obj_Class</span>::<span class="var">c_head</span>, <span class="var">_top_scope</span> }};<br/>
+<span class="in1"></span><span class="var">_top_scope</span> = <span class="var">o</span>;<br/>
+<span class="macro">@end(<span class="name">open scope</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">close scope</span>)</span><br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">o</span> { <span class="var">_top_scope</span> };<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">o</span>) {<br/>
+<span class="in2"></span><span class="var">_top_scope</span> = <span class="var">o</span>-&gt;<span class="fn">descendants</span>();<br/>
+<span class="in2"></span><span class="keyword">delete</span> <span class="var">o</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">close scope</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>

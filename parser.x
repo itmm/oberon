@@ -102,6 +102,22 @@
 ```
 
 ```
+@inc(builder.x)
+```
+
+```
+@add(includes)
+	#include "builder.h"
+@end(includes)
+```
+
+```
+@add(privates)
+	Builder _builder { };
+@end(privates)
+```
+
+```
 @add(privates)
 	int declarations();
 @end(privates);
@@ -126,6 +142,7 @@
 			} else {
 				_version = 1;
 			}
+			_builder.open_scope();
 			if (_symbol == Symbol::s_ident) {
 				_module = _scanner.id();
 				_symbol = _scanner.next();
@@ -180,6 +197,7 @@
 			if (_symbol != Symbol::s_period) {
 				ERR("period missing");
 			}
+			_builder.close_scope();
 		} else {
 			ERR("must start with MODULE");
 		}
